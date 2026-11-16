@@ -1,5 +1,5 @@
 // Offline provoz: při každé nové verzi aplikace zvyšte VERSION.
-const VERSION = "v2.0.2";
+const VERSION = "v2.1.0";
 const CACHE = "procvicovani-" + VERSION;
 const FILES = ["./", "./index.html", "./manifest.webmanifest",
   "./fonts/nunito-latin-wght-normal.woff2", "./fonts/nunito-latin-ext-wght-normal.woff2",

@@ -141,6 +141,71 @@ input{-webkit-user-select:text;user-select:text}
 .sg.wrong::after{border-left-color:var(--bad)}
 .sg.wrong{background:var(--bad-soft)}
 .legend{font-size:16px;color:var(--muted);font-weight:700;margin-top:8px}
+/* profily */
+body{transition:background-color .3s}
+.profiles{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.prof{position:relative;border-radius:24px;box-shadow:var(--shadow);border:4px solid transparent;filter:saturate(1.2)}
+.prof.on{border-color:var(--ink)}
+.prof:not(.on){opacity:.75}
+.pbtn{width:100%;display:flex;gap:14px;align-items:center;text-align:left;padding:14px 60px 14px 16px;background:transparent}
+.pico{font-size:56px;line-height:1;width:76px;height:76px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+.pinfo b{display:block;font-size:24px;font-weight:900}
+.pinfo small{display:block;font-size:15px;font-weight:800;color:var(--muted)}
+.pinfo .today{color:var(--ink);font-size:16px;margin-top:2px}
+.gear{position:absolute;top:10px;right:10px;width:46px;height:46px;border-radius:14px;background:#fff;font-size:22px;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+.panel{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 20px;margin-bottom:20px;display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:18px;align-items:center}
+.lim .lt2{display:flex;justify-content:space-between;gap:8px;font-size:16px;font-weight:800;color:var(--muted);margin-bottom:6px}
+.lim .lt2 b{color:var(--ink)}
+.lim.done .lt2 b{color:var(--ok)}
+.lbar{height:12px;background:#eee8dc;border-radius:999px;overflow:hidden}
+.lbar i{display:block;height:100%;background:var(--star);border-radius:999px}
+.lim.done .lbar i{background:var(--ok)}
+.calbtn{background:var(--ink);color:#fff;border-radius:18px;padding:14px 20px;font-size:19px;font-weight:900;white-space:nowrap}
+/* nastavení */
+.sgrid{display:grid;gap:16px}
+.scard{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px}
+.scard h3{margin:0 0 12px;font-size:20px;font-weight:900}
+.scard .note{font-size:15px;color:var(--muted);font-weight:700;margin-top:10px}
+.swatches{display:flex;gap:12px;flex-wrap:wrap}
+.sw{width:64px;height:64px;border-radius:50%;border:4px solid #fff;box-shadow:0 0 0 2px #ddd6c8}
+.sw.on{box-shadow:0 0 0 4px var(--ink)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.stepper{background:#f8f5ef;border-radius:18px;padding:12px;text-align:center}
+.stepper .sl{font-size:16px;font-weight:800;color:var(--muted)}
+.stepper .sv{font-size:28px;font-weight:900;margin:6px 0}
+.stepper .sv.off{font-size:18px;color:var(--muted);padding:7px 0}
+.stepper .sb{display:flex;gap:10px;justify-content:center}
+.stepper button{width:56px;height:48px;border-radius:14px;background:#fff;box-shadow:0 2px 0 rgba(0,0,0,.08);font-size:26px;font-weight:900}
+.chip.big{font-size:20px;padding:12px 24px}
+.savebar{position:sticky;bottom:0;padding:14px 0 4px;text-align:center}
+/* kalendář */
+.calnav{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.calnav h2{flex:1;text-align:center;margin:0;font-size:28px;font-weight:900}
+.calnav button{background:var(--card);box-shadow:var(--shadow);border-radius:16px;min-width:54px;height:54px;font-size:26px;font-weight:900;padding:0 14px}
+.calnav .todayb{font-size:17px}
+.calsum{margin-bottom:14px}
+.calview{overflow:hidden;touch-action:pan-y;border-radius:var(--radius)}
+.caltrack{display:flex;width:300%;transform:translateX(-33.3333%)}
+.caltrack.anim{transition:transform .28s ease-out}
+.calmonth{width:33.3333%;flex:none;padding:0 2px}
+.cgrid{display:grid;grid-template-columns:repeat(7,1fr) 70px;gap:6px}
+.cgrid .wd{text-align:center;font-size:15px;font-weight:900;color:var(--muted);padding:4px 0}
+.day{background:var(--card);border-radius:14px;min-height:78px;padding:6px 7px;position:relative;box-shadow:0 2px 0 rgba(0,0,0,.05);display:flex;flex-direction:column}
+.day .dn{font-size:15px;font-weight:800;color:var(--muted)}
+.day .dv{flex:1;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:900}
+.day.out{opacity:.35}
+.day.future .dn{opacity:.6}
+.day.today{box-shadow:0 0 0 3px var(--ink)}
+.day.done{background:#c8f1da}
+.day.done::after{content:"✓";position:absolute;top:4px;right:7px;color:var(--ok);font-weight:900;font-size:17px}
+.wk{border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;font-size:16px;background:rgba(255,255,255,.55);color:var(--muted)}
+.wk.done{background:var(--ok);color:#fff}
+.wk small{font-size:11px;font-weight:800}
+.legend2{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:15px;font-weight:800;color:var(--muted)}
+.legend2 span{display:inline-flex;align-items:center;gap:6px}
+.legend2 i{width:20px;height:20px;border-radius:6px;display:inline-block}
+.goalmsg{margin:10px auto 0;max-width:520px;border-radius:16px;padding:12px 16px;font-size:20px;font-weight:900;background:var(--ok-soft);color:var(--ok)}
+.earned{font-size:20px;font-weight:800;color:var(--muted);margin-top:4px}
 @keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
 .pop{animation:pop .35s ease-out}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
@@ -151,6 +216,8 @@ input{-webkit-user-select:text;user-select:text}
   .qtext{font-size:38px} .qtext.long{font-size:22px} .vert{font-size:38px}
   .key{height:64px}
   .kids{grid-template-columns:1fr}
+  .profiles{grid-template-columns:1fr} .panel{grid-template-columns:1fr} .steps{grid-template-columns:1fr}
+  .cgrid{grid-template-columns:repeat(7,1fr) 44px;gap:4px} .day{min-height:58px;padding:4px} .day .dv{font-size:14px}
   .split{font-size:32px} .sg{width:20px}
 }
 </style>
@@ -178,6 +245,30 @@ const ICOS=Object.values(ICON_GROUPS).flat();
 if(!Array.isArray(store.kids)) store.kids=[{name:"Dítě 1",ico:"🦊",grade:0,best:{}},{name:"Dítě 2",ico:"🐻",grade:0,best:{}}];
 if(store.cur==null||!store.kids[store.cur]) store.cur=0;
 const kid=()=>store.kids[store.cur];
+const COLORS=[["Krémová","#fff7ec"],["Mátová","#e2f7ee"],["Nebeská","#e5f0ff"],["Levandulová","#efe9ff"],["Růžová","#ffe9f2"],["Citronová","#fff8d6"],["Broskvová","#ffe8d9"],["Šedá","#eef1f5"]];
+store.kids.forEach((k,i)=>{
+  if(!Array.isArray(k.grades)) k.grades=k.grade?[k.grade]:[];
+  delete k.grade;
+  if(!k.color) k.color=COLORS[i?2:0][1];
+  if(!k.limits) k.limits={day:6,week:30,month:120};
+  if(!k.history) k.history={};
+  if(!k.best) k.best={};
+});
+save();
+const gradeOk=(t,k=kid())=>!k.grades.length||t.g.some(g=>k.grades.includes(g));
+const gradesLabel=k=>{const g=k.grades.slice().sort();return g.length?g.map(x=>x+".").join(", ")+" třída":"všechny třídy"};
+/* data podle dnů */
+const pad=n=>String(n).padStart(2,"0");
+const dkey=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const addDays=(d,n)=>{const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()+n);return x};
+const weekStart=d=>addDays(d,-((d.getDay()+6)%7));
+const starsOn=(k,d)=>k.history[dkey(d)]||0;
+const sumDays=(k,from,n)=>{let s=0;for(let i=0;i<n;i++)s+=starsOn(k,addDays(from,i));return s};
+function periodStats(k,ref=new Date()){
+  const ms=new Date(ref.getFullYear(),ref.getMonth(),1),dim=new Date(ref.getFullYear(),ref.getMonth()+1,0).getDate();
+  return {day:starsOn(k,ref),week:sumDays(k,weekStart(ref),7),month:sumDays(k,ms,dim)};
+}
+const MONTHS=["Leden","Únor","Březen","Duben","Květen","Červen","Červenec","Srpen","Září","Říjen","Listopad","Prosinec"];
 
 /* gap word parser: "b[y]dlet" -> {pre,ans,post} */
 function gapWord(w){const m=w.match(/^(.*?)\[(.+?)\](.*)$/);return {pre:m[1],ans:m[2],post:m[3],full:m[1]+m[2]+m[3]}}
@@ -353,61 +444,165 @@ function totalStars(k=kid()){return Object.values(k.best).reduce((a,b)=>a+starsF
 
 function render(){
   document.body.className = S.subject? (S.subject==="m"?"m-theme":"c-theme") : "";
+  document.body.style.backgroundColor = kid().color;
   if(S.screen==="home") return renderHome();
+  if(S.screen==="settings") return renderSettings();
+  if(S.screen==="calendar") return renderCalendar();
   if(S.screen==="topics") return renderTopics();
   if(S.screen==="quiz") return renderQuiz();
   if(S.screen==="result") return renderResult();
 }
 
-function renderHome(){
-  S.subject=null;document.body.className="";
-  const k=kid(),gr=k.grade;
-  app.innerHTML=`
-    <div class="top"><h1>Ahoj, ${esc(k.name)}! ${k.ico}</h1><button class="pill" id="edit">✏️ Jména a ikony</button></div>
-    <div class="kids">${store.kids.map((x,i)=>`<button class="kid ${i===store.cur?"on":""}" data-k="${i}"><span class="ki">${x.ico}</span><span><b>${esc(x.name)}</b><small>★ ${totalStars(x)}</small></span></button>`).join("")}</div>
-    <div class="hero">Vyber předmět. Každé cvičení má ${QN} příkladů – za správné odpovědi sbíráš hvězdičky.</div>
-    <div class="subjects">
-      <button class="subject m" data-s="m"><div class="ico">🔢</div><div><div class="nm">Matematika</div><div class="sub">${TOPICS.filter(t=>t.s==="m"&&(!gr||t.g.includes(gr))).length} cvičení</div></div></button>
-      <button class="subject c" data-s="c"><div class="ico">📚</div><div><div class="nm">Čeština</div><div class="sub">${TOPICS.filter(t=>t.s==="c"&&(!gr||t.g.includes(gr))).length} cvičení</div></div></button>
-    </div>
-    <div class="grades"><span class="lbl">${esc(k.name)} chodí do:</span>
-      ${[0,2,3,4].map(g=>`<button class="chip ${gr===g?"on":""}" data-g="${g}">${g?g+". třídy":"Všechny"}</button>`).join("")}
-    </div>
-    <div class="total"><span>Hvězdičky – ${esc(k.name)}</span><b>★ ${totalStars()} / ${TOPICS.length*3}</b></div>`;
-  app.querySelectorAll(".kid").forEach(b=>b.onclick=()=>{store.cur=+b.dataset.k;save();renderHome()});
-  app.querySelectorAll(".subject").forEach(b=>b.onclick=()=>{S.subject=b.dataset.s;S.screen="topics";render()});
-  app.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{kid().grade=+b.dataset.g;save();renderHome()});
-  document.getElementById("edit").onclick=renderEdit;
+function limitRow(lbl,val,lim){
+  if(!lim) return `<div class="lim"><div class="lt2"><span>${lbl}</span><b>⭐ ${val}</b></div><div class="lbar"></div></div>`;
+  const ok=val>=lim;
+  return `<div class="lim ${ok?"done":""}"><div class="lt2"><span>${lbl}</span><b>${ok?"✅ ":""}⭐ ${val} / ${lim}</b></div><div class="lbar"><i style="width:${Math.min(100,val/lim*100)}%"></i></div></div>`;
 }
 
-function renderEdit(){
-  const tmp=store.kids.map(x=>x.ico);
+function renderHome(){
+  S.subject=null;document.body.className="";document.body.style.backgroundColor=kid().color;
+  const k=kid(),st=periodStats(k);
   app.innerHTML=`
-    <div class="top"><button class="back" id="bk">‹</button><h1>Jména a ikony</h1></div>
-    <form id="f">
-      ${store.kids.map((x,i)=>`<div class="qcard ecard">
-        <div class="ehead"><span class="bigico" id="bi${i}">${x.ico}</span>
-          <input class="nm-in" id="n${i}" value="${esc(x.name)}" maxlength="16" autocomplete="off" placeholder="Jméno"></div>
+    <div class="profiles">${store.kids.map((x,i)=>{const t=periodStats(x),l=x.limits.day;return `
+      <div class="prof ${i===store.cur?"on":""}" style="background:${x.color}">
+        <button class="pbtn" data-k="${i}"><span class="pico">${x.ico}</span>
+          <span class="pinfo"><b>${esc(x.name)}</b><small>${gradesLabel(x)}</small>
+          <small class="today">Dnes ⭐ ${t.day}${l?" / "+l:""}${l&&t.day>=l?" ✅":""}</small></span></button>
+        <button class="gear" data-e="${i}" aria-label="Nastavení">⚙️</button>
+      </div>`}).join("")}</div>
+    <div class="panel">
+      ${limitRow("Dnes",st.day,k.limits.day)}
+      ${limitRow("Tento týden",st.week,k.limits.week)}
+      ${limitRow("Tento měsíc",st.month,k.limits.month)}
+      <button class="calbtn" id="cal">📅 Kalendář</button>
+    </div>
+    <div class="subjects">
+      <button class="subject m" data-s="m"><div class="ico">🔢</div><div><div class="nm">Matematika</div><div class="sub">${TOPICS.filter(t=>t.s==="m"&&gradeOk(t)).length} cvičení</div></div></button>
+      <button class="subject c" data-s="c"><div class="ico">📚</div><div><div class="nm">Čeština</div><div class="sub">${TOPICS.filter(t=>t.s==="c"&&gradeOk(t)).length} cvičení</div></div></button>
+    </div>
+    <div class="hero" style="margin-top:16px">Každé cvičení má ${QN} příkladů. Za 5 správně je ⭐, za 8 ⭐⭐ a bez chyby ⭐⭐⭐.</div>`;
+  app.querySelectorAll(".pbtn").forEach(b=>b.onclick=()=>{store.cur=+b.dataset.k;save();renderHome()});
+  app.querySelectorAll(".gear").forEach(b=>b.onclick=()=>{S.editKid=+b.dataset.e;S.screen="settings";render()});
+  app.querySelectorAll(".subject").forEach(b=>b.onclick=()=>{S.subject=b.dataset.s;S.screen="topics";render()});
+  document.getElementById("cal").onclick=()=>{S.calMonth=null;S.screen="calendar";render()};
+}
+
+function renderSettings(){
+  const i=S.editKid??store.cur, k=store.kids[i];
+  const t={ico:k.ico,grades:k.grades.slice(),color:k.color,limits:Object.assign({},k.limits)};
+  const STEP={day:1,week:5,month:10},MAX={day:60,week:300,month:1000};
+  document.body.style.backgroundColor=t.color;
+  const stepHTML=(key,lbl)=>`<div class="stepper"><div class="sl">${lbl}</div>
+      <div class="sv ${t.limits[key]?"":"off"}" id="v-${key}">${t.limits[key]?"⭐ "+t.limits[key]:"bez cíle"}</div>
+      <div class="sb"><button type="button" data-l="${key}" data-d="-1">−</button><button type="button" data-l="${key}" data-d="1">+</button></div></div>`;
+  app.innerHTML=`
+    <div class="top"><button class="back" id="bk">‹</button><h1>Nastavení – ${esc(k.name)}</h1></div>
+    <div class="sgrid">
+      <div class="scard"><div class="ehead"><span class="bigico" id="bi">${t.ico}</span>
+        <input class="nm-in" id="nm" value="${esc(k.name)}" maxlength="16" autocomplete="off" placeholder="Jméno"></div></div>
+      <div class="scard"><h3>🎒 Třída</h3>
+        <div class="grades" style="margin:0">${[2,3,4].map(g=>`<button type="button" class="chip big ${t.grades.includes(g)?"on":""}" data-g="${g}">${g}. třída</button>`).join("")}</div>
+        <div class="note">Můžete vybrat i více tříd. Dítě uvidí jen cvičení pro vybrané třídy. Když nevyberete žádnou, uvidí všechna.</div></div>
+      <div class="scard"><h3>🎨 Barva pozadí</h3>
+        <div class="swatches">${COLORS.map(([n,c])=>`<button type="button" class="sw ${c===t.color?"on":""}" data-c="${c}" title="${n}" style="background:${c}"></button>`).join("")}</div></div>
+      <div class="scard"><h3>⭐ Cíle – kolik hvězdiček nasbírat</h3>
+        <div class="steps">${stepHTML("day","Denně")}${stepHTML("week","Týdně")}${stepHTML("month","Měsíčně")}</div>
+        <div class="note">Za jedno cvičení lze získat až 3 hvězdičky. Snížením na nulu cíl vypnete.</div></div>
+      <div class="scard"><h3>😊 Ikona</h3>
         ${Object.entries(ICON_GROUPS).map(([g,list])=>`<div class="glbl">${g}</div>
-          <div class="icos">${list.map(ic=>`<button type="button" class="ic ${ic===x.ico?"on":""}" data-i="${i}" data-ic="${ic}">${ic}</button>`).join("")}</div>`).join("")}
-      </div>`).join("")}
-      <div style="text-align:center"><button class="btn" type="submit">Uložit ✓</button></div>
-    </form>`;
-  document.getElementById("bk").onclick=renderHome;
-  app.querySelectorAll(".ic").forEach(b=>b.onclick=()=>{
-    const i=+b.dataset.i;tmp[i]=b.dataset.ic;
-    app.querySelectorAll(`.ic[data-i="${i}"]`).forEach(x=>x.classList.toggle("on",x===b));
-    const bi=document.getElementById("bi"+i);bi.textContent=tmp[i];bi.classList.remove("pop");void bi.offsetWidth;bi.classList.add("pop");
+          <div class="icos">${list.map(ic=>`<button type="button" class="ic ${ic===t.ico?"on":""}" data-ic="${ic}">${ic}</button>`).join("")}</div>`).join("")}</div>
+    </div>
+    <div class="savebar"><button class="btn" id="sv">Uložit ✓</button></div>`;
+  document.getElementById("bk").onclick=()=>{S.screen="home";render()};
+  app.querySelectorAll(".chip[data-g]").forEach(b=>b.onclick=()=>{
+    const g=+b.dataset.g; t.grades=t.grades.includes(g)?t.grades.filter(x=>x!==g):t.grades.concat(g); b.classList.toggle("on");
   });
-  document.getElementById("f").onsubmit=e=>{
-    e.preventDefault();
-    store.kids.forEach((x,i)=>{const v=document.getElementById("n"+i).value.trim();if(v)x.name=v;x.ico=tmp[i]});
-    save();renderHome();
+  app.querySelectorAll(".sw").forEach(b=>b.onclick=()=>{
+    t.color=b.dataset.c; app.querySelectorAll(".sw").forEach(x=>x.classList.toggle("on",x===b)); document.body.style.backgroundColor=t.color;
+  });
+  app.querySelectorAll(".stepper button").forEach(b=>b.onclick=()=>{
+    const key=b.dataset.l; t.limits[key]=Math.max(0,Math.min(MAX[key],t.limits[key]+STEP[key]*(+b.dataset.d)));
+    const v=document.getElementById("v-"+key); v.textContent=t.limits[key]?"⭐ "+t.limits[key]:"bez cíle"; v.classList.toggle("off",!t.limits[key]);
+  });
+  app.querySelectorAll(".ic").forEach(b=>b.onclick=()=>{
+    t.ico=b.dataset.ic; app.querySelectorAll(".ic").forEach(x=>x.classList.toggle("on",x===b));
+    const bi=document.getElementById("bi");bi.textContent=t.ico;bi.classList.remove("pop");void bi.offsetWidth;bi.classList.add("pop");
+  });
+  document.getElementById("sv").onclick=()=>{
+    const v=document.getElementById("nm").value.trim(); if(v) k.name=v;
+    k.ico=t.ico;k.grades=t.grades.sort();k.color=t.color;k.limits=t.limits;
+    save();S.screen="home";render();
   };
 }
 
+function monthHTML(k,first){
+  const y=first.getFullYear(),m=first.getMonth(),last=new Date(y,m+1,0),today=dkey(new Date()),now=new Date();
+  let h=["Po","Út","St","Čt","Pá","So","Ne"].map(d=>`<div class="wd">${d}</div>`).join("")+`<div class="wd">Týden</div>`;
+  for(let ws=weekStart(first); ws<=last; ws=addDays(ws,7)){
+    for(let i=0;i<7;i++){
+      const d=addDays(ws,i),v=starsOn(k,d),lim=k.limits.day,key=dkey(d);
+      const cls=["day"];
+      if(d.getMonth()!==m) cls.push("out");
+      if(key===today) cls.push("today");
+      if(d>now&&key!==today) cls.push("future");
+      const done=lim&&v>=lim; if(done) cls.push("done");
+      const bg=!done&&v>0?` style="background:rgba(255,198,41,${(0.18+0.5*Math.min(1,lim?v/lim:1)).toFixed(2)})"`:"";
+      h+=`<div class="${cls.join(" ")}"${bg}><span class="dn">${d.getDate()}</span><span class="dv">${v?"⭐ "+v:""}</span></div>`;
+    }
+    const w=sumDays(k,ws,7),wl=k.limits.week,wd=wl&&w>=wl;
+    h+=`<div class="wk ${wd?"done":""}">${wd?"✅":""}<span>⭐ ${w}</span>${wl?`<small>z ${wl}</small>`:""}</div>`;
+  }
+  return `<div class="cgrid">${h}</div>`;
+}
+
+function renderCalendar(){
+  const k=kid(); if(!S.calMonth){const n=new Date();S.calMonth=new Date(n.getFullYear(),n.getMonth(),1)}
+  const cur=S.calMonth,y=cur.getFullYear(),m=cur.getMonth();
+  const prev=new Date(y,m-1,1),next=new Date(y,m+1,1);
+  const mSum=sumDays(k,cur,new Date(y,m+1,0).getDate());
+  app.innerHTML=`
+    <div class="top"><button class="back" id="bk">‹</button><h1>📅 Kalendář – ${k.ico} ${esc(k.name)}</h1></div>
+    <div class="calnav"><button id="pv">‹</button><h2>${MONTHS[m]} ${y}</h2><button class="todayb" id="td">Dnes</button><button id="nx">›</button></div>
+    <div class="panel calsum" style="grid-template-columns:1fr">${limitRow(`Celkem za ${MONTHS[m].toLowerCase()}`,mSum,k.limits.month)}</div>
+    <div class="calview" id="cv"><div class="caltrack" id="tr">
+      <div class="calmonth">${monthHTML(k,prev)}</div><div class="calmonth">${monthHTML(k,cur)}</div><div class="calmonth">${monthHTML(k,next)}</div>
+    </div></div>
+    <div class="legend2">
+      <span><i style="background:#c8f1da;box-shadow:inset 0 0 0 2px var(--ok)"></i>denní cíl splněn</span>
+      <span><i style="background:rgba(255,198,41,.5)"></i>cvičilo se</span>
+      <span><i style="background:var(--ok)"></i>týdenní cíl splněn</span>
+      <span><i style="background:#fff;box-shadow:inset 0 0 0 3px var(--ink)"></i>dnes</span>
+    </div>
+    <div class="hero" style="margin-top:10px">Posouvej prstem doleva a doprava.</div>`;
+  document.getElementById("bk").onclick=()=>{S.screen="home";render()};
+  const tr=document.getElementById("tr"),cv=document.getElementById("cv");
+  const go=dir=>{
+    tr.classList.add("anim");
+    tr.style.transform=`translateX(${dir>0?-66.6667:0}%)`;
+    setTimeout(()=>{S.calMonth=dir>0?next:prev;renderCalendar()},280);
+  };
+  document.getElementById("pv").onclick=()=>go(-1);
+  document.getElementById("nx").onclick=()=>go(1);
+  document.getElementById("td").onclick=()=>{S.calMonth=null;renderCalendar()};
+  let x0=null,y0=null,dx=0,drag=false;
+  cv.addEventListener("pointerdown",e=>{x0=e.clientX;y0=e.clientY;dx=0;drag=false;tr.classList.remove("anim")});
+  cv.addEventListener("pointermove",e=>{
+    if(x0===null) return; dx=e.clientX-x0;
+    if(!drag&&Math.abs(dx)>10&&Math.abs(dx)>Math.abs(e.clientY-y0)){drag=true;try{cv.setPointerCapture(e.pointerId)}catch(_){}}
+    if(drag) tr.style.transform=`translateX(calc(-33.3333% + ${dx}px))`;
+  });
+  const end=()=>{
+    if(x0===null) return; x0=null;
+    if(!drag) return;
+    const w=cv.clientWidth;
+    if(dx<-w*0.18) go(1); else if(dx>w*0.18) go(-1);
+    else {tr.classList.add("anim");tr.style.transform="translateX(-33.3333%)"}
+  };
+  cv.addEventListener("pointerup",end);cv.addEventListener("pointercancel",end);
+}
+
 function renderTopics(){
-  const list=TOPICS.filter(t=>t.s===S.subject&&(!kid().grade||t.g.includes(kid().grade)));
+  const list=TOPICS.filter(t=>t.s===S.subject&&gradeOk(t));
   app.innerHTML=`
     <div class="top"><button class="back" id="bk">‹</button><h1>${S.subject==="m"?"🔢 Matematika":"📚 Čeština"}</h1>
       <span class="pill">${kid().ico} ${esc(kid().name)}</span></div>
@@ -547,11 +742,24 @@ function advance(){
   if(S.screen!=="quiz") return;
   S.i++;
   if(S.i>=QN){
-    const id=S.topic.id,b=kid().best; if((b[id]||0)<S.score){b[id]=S.score;save()}
+    const id=S.topic.id,k=kid(),b=k.best; if((b[id]||0)<S.score){b[id]=S.score}
+    const st=starsFor(S.score); S.before=periodStats(k); S.earned=st;
+    if(st){const dk=dkey(new Date()); k.history[dk]=(k.history[dk]||0)+st}
+    save();
     S.screen="result";render();
   } else nextQ();
 }
 
+function resultGoals(){
+  const k=kid(),e=S.earned||0,b=S.before; if(!b) return "";
+  const after=periodStats(k),L=k.limits,msgs=[];
+  [["day","🎉 Denní cíl splněn!"],["week","🏅 Týdenní cíl splněn!"],["month","🏆 Měsíční cíl splněn!"]].forEach(([key,txt])=>{
+    if(L[key]&&b[key]<L[key]&&after[key]>=L[key]) msgs.push(txt);
+  });
+  let h=e?`<div class="earned">+${e} ⭐ · dnes máš ⭐ ${after.day}${L.day?" / "+L.day:""}</div>`:"";
+  if(!msgs.length&&L.day&&after.day<L.day) h+=`<div class="earned">Do denního cíle chybí ${L.day-after.day} ⭐</div>`;
+  return h+msgs.map(m=>`<div class="goalmsg pop">${m}</div>`).join("");
+}
 function renderResult(){
   const st=starsFor(S.score);
   const msg=st===3?["🏆","Bez jediné chyby!"]:st===2?["🎉","Skvělá práce!"]:st===1?["👍","Dobrý začátek!"]:["💪","Zkus to ještě jednou!"];
@@ -563,6 +771,7 @@ function renderResult(){
       <h2>${msg[1]}</h2>
       <p>Správně ${S.score} z ${QN}</p>
       ${starsHTML(st)}
+      ${resultGoals()}
       ${wrong.length?`<div class="mistakes"><div><b>Na tohle si dej pozor:</b></div>${wrong.map(l=>`<div>✏️ ${esc(l.shown)} <span style="color:var(--muted)">(odpověď: ${esc(l.given)})</span></div>`).join("")}</div>`:""}
       <div class="btns">
         <button class="btn" id="again">Znovu 🔄</button>
