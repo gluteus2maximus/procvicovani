@@ -48,6 +48,10 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 .subject .sub{font-size:17px;opacity:.85;font-weight:700}
 .subject.m{background:var(--math);color:#fff}
 .subject.c{background:var(--cz);color:#fff}
+.subject.a{background:#f08c00;color:#fff}
+.subject.p{background:#2f9e44;color:#fff}
+.a-theme{--cz:#f08c00;--cz-soft:#fff0d6}
+.p-theme{--cz:#2f9e44;--cz-soft:#e3f6e7}
 .grades{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 8px}
 .grades .lbl{font-weight:800;color:var(--muted);align-self:center;margin-right:4px}
 .chip{background:var(--card);box-shadow:var(--shadow);border-radius:999px;padding:10px 20px;font-size:18px;font-weight:800}
@@ -403,6 +407,340 @@ const czGen = {
     return {type:"choice",label:"Kolik slabik má slovo?",text:w,answer:String(n),choices:["1","2","3","4"],fixedOrder:true}},
 };
 
+/* ============ PŘEDMĚTY ============ */
+const SUBJ = {
+  m:{nm:"Matematika",ico:"🔢",cls:"m-theme"},
+  c:{nm:"Čeština",ico:"📚",cls:"c-theme"},
+  a:{nm:"Angličtina",ico:"🇬🇧",cls:"c-theme a-theme"},
+  p:{nm:"Přírodověda",ico:"🌱",cls:"c-theme p-theme"},
+};
+const others=(arr,ans,n=3)=>shuffle(arr.filter(x=>x!==ans)).slice(0,n);
+
+/* ============ MATEMATIKA 4. třída ============ */
+const pl=(n,one,few,many)=>`${n} ${n===1?one:n<5?few:many}`;
+const math4 = {
+  /* přednost násobení a dělení (bez závorek) */
+  poradi(){
+    const t=R(0,5);let a,b,c,q,x,txt,ans,h;
+    switch(t){
+      case 0: a=R(10,99);b=R(2,9);c=R(2,9);x=b*c;txt=`${a} + ${b} · ${c}`;ans=a+x;h=`Nejdřív násobíme: ${b} · ${c} = ${x}, pak ${a} + ${x} = ${ans}.`;break;
+      case 1: b=R(2,9);c=R(2,9);x=b*c;a=R(x+1,x+80);txt=`${a} − ${b} · ${c}`;ans=a-x;h=`Nejdřív násobíme: ${b} · ${c} = ${x}, pak ${a} − ${x} = ${ans}.`;break;
+      case 2: a=R(2,9);b=R(2,9);c=R(2,60);x=a*b;txt=`${a} · ${b} + ${c}`;ans=x+c;h=`Nejdřív násobíme: ${a} · ${b} = ${x}, pak ${x} + ${c} = ${ans}.`;break;
+      case 3: a=R(3,9);b=R(3,9);x=a*b;c=R(1,x-1);txt=`${a} · ${b} − ${c}`;ans=x-c;h=`Nejdřív násobíme: ${a} · ${b} = ${x}, pak ${x} − ${c} = ${ans}.`;break;
+      case 4: c=R(2,9);q=R(2,10);b=c*q;a=R(5,90);txt=`${a} + ${b} : ${c}`;ans=a+q;h=`Nejdřív dělíme: ${b} : ${c} = ${q}, pak ${a} + ${q} = ${ans}.`;break;
+      default: c=R(2,9);q=R(2,10);b=c*q;a=R(q+1,q+90);txt=`${a} − ${b} : ${c}`;ans=a-q;h=`Nejdřív dělíme: ${b} : ${c} = ${q}, pak ${a} − ${q} = ${ans}.`;
+    }
+    return numQ(`${txt} = ?`,ans,{label:"Nejdřív násob a děl, pak sčítej a odčítej",hint:h})},
+
+  /* se závorkami (občas bez, ať si dítě všimne rozdílu) */
+  zavorky(){
+    if(Math.random()<.25) return Object.assign(math4.poradi(),{label:"Pozor na pořadí operací!"});
+    const t=R(0,5);let a,b,c,q,x,txt,ans,h;
+    switch(t){
+      case 0: a=R(5,40);b=R(2,40);c=R(2,9);x=a+b;txt=`(${a} + ${b}) · ${c}`;ans=x*c;h=`Nejdřív závorka: ${a} + ${b} = ${x}, pak ${x} · ${c} = ${ans}.`;break;
+      case 1: x=R(2,12);b=R(5,80);a=b+x;c=R(2,9);txt=`(${a} − ${b}) · ${c}`;ans=x*c;h=`Nejdřív závorka: ${a} − ${b} = ${x}, pak ${x} · ${c} = ${ans}.`;break;
+      case 2: c=R(2,9);q=R(2,20);x=c*q;a=R(1,x-1);b=x-a;txt=`(${a} + ${b}) : ${c}`;ans=q;h=`Nejdřív závorka: ${a} + ${b} = ${x}, pak ${x} : ${c} = ${ans}.`;break;
+      case 3: c=R(2,9);q=R(2,15);x=c*q;b=R(5,150);a=b+x;txt=`(${a} − ${b}) : ${c}`;ans=q;h=`Nejdřív závorka: ${a} − ${b} = ${x}, pak ${x} : ${c} = ${ans}.`;break;
+      case 4: c=R(2,9);q=R(2,10);a=c*q;b=R(c+1,c+60);txt=`${a} : (${b} − ${b-c})`;ans=q;h=`Nejdřív závorka: ${b} − ${b-c} = ${c}, pak ${a} : ${c} = ${ans}.`;break;
+      default: b=R(20,90);c=R(2,b-5);a=R(b,b+80);x=b-c;txt=`${a} − (${b} − ${c})`;ans=a-x;h=`Nejdřív závorka: ${b} − ${c} = ${x}, pak ${a} − ${x} = ${ans}.`;
+    }
+    return numQ(`${txt} = ?`,ans,{label:"Nejdřív vypočítej závorku",hint:h})},
+
+  /* větší čísla, jako 30 · 70 + 1 300 */
+  poradiVelka(){
+    const t=R(0,4);let a,b,c,q,x,txt,ans,h;
+    switch(t){
+      case 0: a=R(2,9)*10;b=R(2,9)*10;c=R(1,20)*100;x=a*b;txt=`${a} · ${b} + ${fmt(c)}`;ans=x+c;h=`${a} · ${b} = ${fmt(x)}, pak ${fmt(x)} + ${fmt(c)} = ${fmt(ans)}.`;break;
+      case 1: x=pick([10,20,50,100]);a=R(1,x-1);b=x-a;q=R(2,9)*(x===100?R(1,9):1);c=x*q;txt=`${fmt(c)} : (${a} + ${b})`;ans=q;h=`Závorka: ${a} + ${b} = ${x}, pak ${fmt(c)} : ${x} = ${ans}.`;break;
+      case 2: x=R(2,9);b=R(1000,1900);a=b+x;c=R(1,9)*10;txt=`(${fmt(a)} − ${fmt(b)}) · ${c}`;ans=x*c;h=`Závorka: ${fmt(a)} − ${fmt(b)} = ${x}, pak ${x} · ${c} = ${ans}.`;break;
+      case 3: c=R(2,9);q=R(20,99);b=c*q;a=R(b+50,b+2500);txt=`${fmt(a)} − ${b} : ${c}`;ans=a-q;h=`Nejdřív dělíme: ${b} : ${c} = ${q}, pak ${fmt(a)} − ${q} = ${fmt(ans)}.`;break;
+      default: a=R(1000,2000);b=R(2,9);c=R(10,99);x=b*c;txt=`${fmt(a)} + ${b} · ${c}`;ans=a+x;h=`Nejdřív násobíme: ${b} · ${c} = ${x}, pak ${fmt(a)} + ${x} = ${fmt(ans)}.`;
+    }
+    return numQ(`${txt} = ?`,ans,{label:"Pořadí operací – větší čísla",hint:h})},
+
+  /* násobení mimo obor násobilky: 45 · 5 = 40 · 5 + 5 · 5 */
+  nasMimo(){
+    const a=R(11,99),b=R(2,9),d=Math.floor(a/10)*10,j=a%10;
+    const h=j?`${a} · ${b} = ${d} · ${b} + ${j} · ${b} = ${d*b} + ${j*b} = ${a*b}`:`${a} · ${b} = ${a/10} · ${b} · 10 = ${a*b}`;
+    return Math.random()<.5?numQ(`${a} · ${b} = ?`,a*b,{label:"Násobení mimo násobilku",hint:h})
+      :numQ(`${b} · ${a} = ?`,a*b,{label:"Násobení mimo násobilku",hint:h.replace(`${a} · ${b} =`,`${b} · ${a} = ${a} · ${b} =`)})},
+
+  /* násobení a dělení s nulami: 80 · 70, 2 400 : 40, 60 · ▢ = 2 400 */
+  nuly(){
+    const t=R(0,5);let a,b,c,h;
+    switch(t){
+      case 0: a=R(2,9);b=R(2,9);return numQ(`${a*10} · ${b*10} = ?`,a*b*100,{hint:`${a} · ${b} = ${a*b}, připíšeme dvě nuly → ${fmt(a*b*100)}.`});
+      case 1: a=R(2,9);b=R(2,9);return numQ(`${a*100} · ${b} = ?`,a*b*100,{hint:`${a} · ${b} = ${a*b}, připíšeme dvě nuly → ${fmt(a*b*100)}.`});
+      case 2: a=R(2,9);b=R(2,9);c=a*b*100;return numQ(`${fmt(c)} : ${b*10} = ?`,a*10,{hint:`${fmt(c)} : ${b*10} je stejné jako ${a*b*10} : ${b} = ${a*10}.`});
+      case 3: a=R(2,9);b=R(2,9);c=a*b*100;return numQ(`${fmt(c)} : ${b} = ?`,a*100,{hint:`${a*b} : ${b} = ${a}, připíšeme dvě nuly → ${a*100}.`});
+      case 4: a=R(2,9);b=R(2,9);c=a*b*100;return numQ(`${a*10} · ▢ = ${fmt(c)}`,b*10,{label:"Které číslo chybí?",hint:`${a*10} · ${b*10} = ${fmt(c)}.`});
+      default: a=pick([10,100]);b=R(2,99)*a;return numQ(`${fmt(b)} : ${a} = ?`,b/a,{hint:`Při dělení ${a} škrtneme ${a===10?"jednu nulu":"dvě nuly"}.`});
+    }},
+
+  /* slovní úlohy s více početními výkony */
+  slovni4(){
+    const t=R(0,5);let a,b,c,d;
+    switch(t){
+      case 0: a=R(5,15);b=R(2,6);c=R(3,9);return numQ(`V muzeu bylo u vstupu ${a} exponátů. Pak děti prošly ${pl(b,"vitrínu","vitríny","vitrín")}, v každé bylo ${c} exponátů. Kolik exponátů viděly celkem?`,a+b*c,{long:true,hint:`${a} + ${b} · ${c} = ${a} + ${b*c} = ${a+b*c}`});
+      case 1: a=pick([80,100,120,150]);b=a/2;c=R(2,5);return numQ(`Vstupenka pro dospělého stojí ${a} Kč, pro dítě ${b} Kč. Kolik zaplatí babička se ${c} vnoučaty?`,a+c*b,{long:true,hint:`${a} + ${c} · ${b} = ${a} + ${c*b} = ${a+c*b} Kč`});
+      case 2: a=R(3,6);b=R(4,8);c=R(2,a*b-5);return numQ(`V muzeu ${a<5?"byly":"bylo"} k vyzkoušení ${pl(a,"vynález","vynálezy","vynálezů")}, od každého ${b} kusů. ${pl(c,"kus byl","kusy byly","kusů bylo")} mimo provoz. Kolik kusů zůstalo funkčních?`,a*b-c,{long:true,hint:`${a} · ${b} − ${c} = ${a*b} − ${c} = ${a*b-c}`});
+      case 3: d=R(2,6);b=R(2,6);a=d*R(2,5);c=a*b/d;return numQ(`Tatínek koupil ${pl(a,"balíček","balíčky","balíčků")} sušenek, v každém ${b<5?"byly":"bylo"} ${pl(b,"sušenka","sušenky","sušenek")}. Rozdělil je spravedlivě mezi ${pl(d,"dítě","děti","dětí")}. Kolik sušenek dostalo každé dítě?`,c,{long:true,hint:`(${a} · ${b}) : ${d} = ${a*b} : ${d} = ${c}`});
+      case 4: b=R(3,9);c=pick([4,5,6,8,10,12]);a=R(Math.ceil(b*c/50)+1,10)*50;return numQ(`Maminka měla ${a} Kč. Koupila ${pl(b,"rohlík","rohlíky","rohlíků")} po ${c} Kč. Kolik korun jí zbylo?`,a-b*c,{long:true,hint:`${a} − ${b} · ${c} = ${a} − ${b*c} = ${a-b*c} Kč`});
+      default: a=R(10,15);b=R(1,5);return numQ(`Ve třídě je ${a} lavic a v každé sedí 2 děti. Dnes ${b===1?"chybí":"chybí"} ${pl(b,"dítě","děti","dětí")}. Kolik dětí je ve třídě?`,a*2-b,{long:true,hint:`${a} · 2 − ${b} = ${a*2} − ${b} = ${a*2-b}`});
+    }},
+};
+
+/* ============ ČEŠTINA 4. třída ============ */
+/* vyjmenovaná slova ve slovních spojeních – [slovo s mezerou, vysvětlení] */
+const VYJM4 = [
+ ["medv[í]dek z plyše","Medvídek – po d tu píšeme í (čteme [ďí])."],["hračka z pl[y]še","Plyš je vyjmenované slovo."],["b[y]stří lidé","Bystrý je vyjmenované slovo."],
+ ["bystří l[i]dé","Lidé není vyjmenované slovo."],["hořký pel[y]něk","Pelyněk je vyjmenované slovo."],["zv[í]davá dívka","Zvídavý (od vědět) není vyjmenované – i/í."],
+ ["b[y]dlet v bytě","Bydlet je vyjmenované slovo."],["opadaná om[í]tka","Omítka (od mést) není vyjmenovaná – i/í."],["zasl[e]pila ho pýcha","Zaslepila – pozor, to není slepýš!"],
+ ["zaslep[i]la ho pýcha","Zaslepit je příbuzné s lepit, ne se slepýš – i."],["zaslepila ho p[ý]cha","Pýcha je vyjmenované slovo."],["m[y]š a netopýr","Myš je vyjmenované slovo."],
+ ["myš a netop[ý]r","Netopýr je vyjmenované slovo."],["s[y]chravý den","Sychravý patří mezi vyjmenovaná slova po s."],["krásná vzpom[í]nka","Vzpomínat není vyjmenované – i/í."],
+ ["kl[i]dně usínat","Klid není vyjmenované slovo."],["klidně us[í]nat","Usínat (od snít, spát) – i/í."],["zam[y]kat vrata","Zamykat je vyjmenované slovo."],
+ ["hlas[i]tě žvýkat","Hlasitě – po s uprostřed slova, není vyjmenované."],["hlasitě žv[ý]kat","Žvýkat je vyjmenované slovo."],["v[í]tat hosty","Vítat není vyjmenované slovo."],
+ ["zás[i]lka","Zásilka (od poslat) není vyjmenovaná – i."],["m[ý]t si nohy","Mýt je vyjmenované slovo (myji, myčka)."],["b[ý]t vysoký","Být je vyjmenované slovo."],
+ ["být v[y]soký","Vysoký je vyjmenované slovo."],["náb[y]tek ze dřeva","Nábytek je vyjmenované slovo."],["j[í]st syrovou mrkev","Po j píšeme vždy i/í."],
+ ["jíst s[y]rovou mrkev","Syrový je vyjmenované slovo."],["anglický jaz[y]k","Jazyk je vyjmenované slovo."],["černý ryb[í]z","Rybíz není vyjmenované ani příbuzné slovo – i/í."],
+ ["Sl[y]šel jsem hrát.","Slyšet je vyjmenované slovo."],["b[y]dlí naproti","Bydlet je vyjmenované slovo."],["br[z]y ráno","Brzy – na konci y."],
+ ["zv[y]kat si na struny","Zvykat je vyjmenované slovo."],["Možná se m[ý]lím.","Mýlit se je vyjmenované slovo."],["M[y] máme hudebníky.","Zájmeno my – píšeme y."],
+ ["Včela op[y]luje květ.","Opylovat je příbuzné s pyl."],["ob[y]čejná tužka","Obyčej je vyjmenované slovo."],["l[ý]tkové svaly","Lýtko je vyjmenované slovo."],
+ ["v[y]sypat koš","Vy- je předpona a sypat je vyjmenované slovo."],["nádobí do m[y]čky","Myčka je příbuzné s mýt."],["jaz[y]ková škola","Jazykový je příbuzné s jazyk."],
+ ["l[y]žař na svahu","Lyžař je příbuzné s lyže."],["um[y]vadlo v koupelně","Umyvadlo je příbuzné s mýt."],["m[í]t radost","Mít (vlastnit) – i/í. Mýt (umývat) – y/ý."],
+ ["m[ý]t nádobí","Mýt (umývat) – y/ý. Mít (vlastnit) – i/í."],["b[i]tva u hradu","Bitva (od bít) – i."],["b[y]l jsem doma","Byl (od být) – y."],
+ ["v[i]sel na stromě","Viset není vyjmenované slovo."],["p[í]seň o jaru","Píseň není vyjmenované slovo."],["s[y]rový sýr","Syrový je vyjmenované slovo."],
+ ["dob[y]tek na pastvě","Dobytek je vyjmenované slovo."],["chm[ý]ří z pampelišky","Chmýří je vyjmenované slovo."],["kop[y]to koně","Kopyto je vyjmenované slovo."],
+].filter(x=>/\[[iíyý]\]/.test(x[0]));
+
+/* slova souznačná a protikladná – [slovo, souznačné, protikladné] */
+const SYN = [
+ ["pěkný","hezký","ošklivý"],["velký","veliký","malý"],["rychlý","hbitý","pomalý"],["smutný","zarmoucený","veselý"],["statečný","odvážný","zbabělý"],
+ ["chytrý","bystrý","hloupý"],["tichý","nehlučný","hlučný"],["blízký","nedaleký","vzdálený"],["jednoduchý","lehký","složitý"],["mluvit","hovořit","mlčet"],
+ ["začátek","počátek","konec"],["radost","potěšení","smutek"],["přítel","kamarád","nepřítel"],["dívat se","hledět",null],["spěchat","pospíchat","loudat se"],
+ ["jídlo","pokrm",null],["jít","kráčet",null],["štědrý",null,"lakomý"],["hodný","dobrý","zlý"],["čistý","umytý","špinavý"],["silný","mocný","slabý"],
+ ["mokrý","promáčený","suchý"],["studený","chladný","teplý"],["světlý","jasný","tmavý"],["vysoký",null,"nízký"],["plný",null,"prázdný"],["ráno","jitro","večer"],
+ ["přijít","dorazit","odejít"],["dát","darovat","vzít"],["úzký",null,"široký"],["drahý","nákladný","levný"],["křičet","řvát","šeptat"],
+["auto","automobil",null],["den",null,"noc"],["pravda",null,"lež"],["otevřít",null,"zavřít"],
+];
+/* nadřazená a podřazená slova – [nadřazené, podřazená] */
+const NADRAZ = [
+ ["obuv",["tenisky","holínky","pohorky","sandály","bačkory"]],["oblečení",["tričko","mikina","bunda","kalhoty","svetr"]],
+ ["pečivo",["houska","rohlík","chléb","koláč","bageta"]],["kancelářské potřeby",["papír","lepidlo","nůžky","propiska","sešívačka"]],
+ ["pohoří",["Jeseníky","Beskydy","Krkonoše","Šumava"]],["nábytek",["postel","skříň","stůl","židle","komoda"]],
+ ["ptáci",["sýkorka","vrabec","kos","sova","káně"]],["houby",["hřib","bedla","muchomůrka","křemenáč"]],
+ ["zimní sporty",["hokej","biatlon","lyžování","bruslení"]],["ovoce",["jablko","hruška","švestka","třešeň"]],
+ ["zelenina",["mrkev","okurka","paprika","cibule"]],["hudební nástroje",["housle","kytara","klavír","flétna","buben"]],
+ ["nádobí",["hrnec","talíř","hrnek","pánev","miska"]],["nářadí",["kladivo","pila","šroubovák","kleště"]],
+ ["dopravní prostředky",["auto","vlak","autobus","tramvaj","letadlo"]],["plazi",["had","ještěrka","želva","krokodýl"]],
+];
+/* slova mnohoznačná – [dva významy, slovo] */
+const MNOHO = [
+ ["pokrývka hlavy i část houby","klobouk"],["část auta i ekologický dopravní prostředek","kolo"],["ovčí srst i pohyb na vodě","vlna"],
+ ["proutěná nádoba i náhubek pro psa","košík"],["dekorace z květin i druh zákusku","věneček"],["velká kost v těle i nádoba na smažení","pánev"],
+ ["geometrický útvar i pomůcka k plavání","kruh"],["zvíře i zábavná činnost (záliba)","koníček"],["orgán sluchu i držátko hrnku","ucho"],
+ ["orgán zraku i kapka tuku v polévce","oko"],["vstupenka i malý list rostliny","lístek"],["peníze i ozdoba královské hlavy","koruna"],
+ ["orgán v ústech i řeč (anglický …)","jazyk"],["věc k odemykání i značka v notách","klíč"],["část ptačího těla i velký hudební nástroj","křídlo"],
+ ["velký hudební nástroj i vězení (hovorově)","basa"],["část ucha i malý hudební nástroj","bubínek"],["malý hlodavec i ovladač k počítači","myš"],
+ ["stavba pro krále i věc k zamykání","zámek"],["mladý kohout i ventil u vodovodu","kohoutek"],["část rostliny i kus papíru","list"],
+ ["těleso na nebi i slavná osoba","hvězda"],
+];
+/* spisovná a nespisovná slova – [nespisovné, spisovné] */
+const SPIS = [
+ ["modrej","modrý"],["zejtra","zítra"],["brácha","bratr"],["binec","nepořádek"],["vobrovskej","obrovský"],["ájina","angličtina"],["čeják","čeština"],
+ ["matika","matematika"],["bágl","batoh"],["flaška","láhev"],["dobrej","dobrý"],["vokno","okno"],["mlíko","mléko"],["polívka","polévka"],["kafe","káva"],
+ ["votevřít","otevřít"],["kámoš","kamarád"],["děcka","děti"],["brejle","brýle"],["cejtit","cítit"],["bejt","být"],["mejdlo","mýdlo"],["vokurka","okurka"],
+ ["ségra","sestra"],["telka","televize"],["tělák","tělocvik"],["makat","pracovat"],["von","on"],["dyť","vždyť"],["takle","takhle"],
+];
+/* kořen slova – [kořen, slova příbuzná, chytáky] */
+const KOREN = [
+ ["les",["lesík","lesník","zalesnit","lesní","prales"],["lesn","zales","lesí"]],["vod",["vodník","podvodní","vodička","vodní"],["vodn","voda","vodi"]],
+ ["sliz",["slizký","oslizlý","zeslizovatět","slizák"],["slizk","osliz","zesliz"]],["pis",["dopis","nápis","popis","zapisovat"],["dopi","nápi","zapis"]],
+ ["škol",["školka","školní","školák","předškolák"],["školk","předškol","škola"]],["zahrad",["zahrádka","zahradník","zahradní"],["zahradn","zahrádk","zahra"]],
+ ["ryb",["rybník","rybář","rybička","rybí"],["rybn","rybá","rybi"]],["dom",["domov","domek","domácí","domeček"],["domo","doma","domek"]],
+ ["chod",["chodník","odchod","chodit","příchod"],["chodn","odcho","příchod"]],["let",["letadlo","letiště","odlet","letec"],["leta","odlet","leti"]],
+ ["hrad",["hrádek","hradní","hradby","podhradí"],["hradn","podhrad","hradb"]],
+];
+/* předpony a předložky – [zápis se závorkou, správně] */
+const PREDL = [
+ ["(od)padky","odpadky"],["(nad)mořem","nad mořem"],["(pod)kopat","podkopat"],["(před)pověď","předpověď"],["(pod)skálou","pod skálou"],["(od)sestry","od sestry"],
+ ["(nad)pis","nadpis"],["(před)námi","před námi"],["(bez)starostný","bezstarostný"],["(bez)dozoru","bez dozoru"],["(pod)stolem","pod stolem"],["(před)domem","před domem"],
+ ["(od)nést","odnést"],["(nad)hodit","nadhodit"],["(pod)lézt","podlézt"],["(bez)vadný","bezvadný"],["(bez)problémů","bez problémů"],["(od)Petra","od Petra"],
+ ["(nad)hlavou","nad hlavou"],["(před)nádražím","před nádražím"],["(pod)pis","podpis"],["(od)jet","odjet"],["(nad)zemní","nadzemní"],["(bez)chybný","bezchybný"],
+ ["(bez)cukru","bez cukru"],["(roz)svítit","rozsvítit"],["(před)jet","předjet"],["(pod)zemí","pod zemí"],["(nad)pískovištěm","nad pískovištěm"],["(od)kolotoče","od kolotoče"],
+];
+/* předpony s d/t a z/s na konci */
+const PREDP_D = ["o[d]padky","po[d]kopat","pře[d]pověď","na[d]pis","o[d]nést","na[d]hodit","po[d]lézt","pře[d]povědět","o[d]jet","pře[d]jet","po[d]jet","na[d]zemní","o[d]bočit","po[d]pis","o[d]poledne",
+ "o[d] Petra","na[d] hlavou","po[d] stolem","pře[d] domem","po[d] smrkem","o[d] kolotoče","na[d] pískovištěm","pře[d] vstupem"];
+const PREDP_Z = ["v[z]budit","v[z]kaz","v[z]pomínat","v[z]hled","v[z]tah","v[z]nášet","ro[z]svítit","ro[z]šíření","be[z]vadný","be[z]starostný","be[z] problémů","be[z] nápadů",
+ "be[z]větří","v[z]létnout","ro[z]bít","ro[z]táhnout","be[z]pečný","ro[z]kvetlý","be[z] dozoru","v[z]lykat","ro[z]hodnout","be[z]chybný"];
+/* bě/bje, vě/vje, pě */
+const EJE4 = ["příb[ě]h","ob[je]mný nákup","sv[ě]řit se","zodpov[ě]dnost","v[je]t do garáže","neob[je]vit se","ozv[ě]na","lesní p[ě]šinka","v[ě]šet prádlo","úsp[ě]ch",
+ "silný v[je]m","v[ě]jíř","hříb[ě]","kv[ě]ták","p[ě]na","b[ě]hat","ob[ě]d","ob[je]t dům","ob[ě]ť","babiččino ob[je]tí","ob[je]dnat","ob[je]vitel","ob[ě]dvat","v[je]zd",
+ "v[ě]da","ob[je]v","b[ě]žet","v[ě]řit","p[ě]t minut","dv[ě] strany mince","ob[je]vil se","v[ě]tev","ob[je]dnávka"];
+/* předpona vy-/vý- × vi/ví */
+const VYVI = ["v[y]děsit","v[y]čarovat","v[ý]let","v[ý]tah","v[y]barvený","v[ý]zkumný","v[y]táhli","v[y]dechla","v[ý]střih","v[y]stoupit","v[ý]hra","v[y]lít","v[y]psat",
+ "v[ý]sledek","v[y]hrát","v[ý]stava","v[y]sypat","v[ý]kres","v[i]sely","v[i]děl","v[í]tat","v[i]dlička","v[í]tr","v[i]tamín","v[í]kend","v[i]dle","v[i]ditelný","v[y]soký"];
+/* pády */
+const PADY = ["1. pád","2. pád","3. pád","4. pád","5. pád","6. pád","7. pád"];
+const PADQ = ["kdo? co?","(bez) koho? čeho?","(ke) komu? čemu?","(vidím) koho? co?","oslovujeme, voláme","(o) kom? o čem?","(s) kým? čím?"];
+const PADVETY = [
+ ["Vojta rád přemýšlí o <b>světě</b>.",6],["<b>Viky</b> je umělecky založená.",1],["Viky chodí na procházky s <b>Ťapkou</b>.",7],["Poukaz do restaurace bych dal <b>Vojtovi</b>.",3],
+ ["<b>Ťapko</b>, pojď ke mně!",5],["Viky si dá salát bez <b>rajčat</b>.",2],["Na výstavě potkáš <b>Vojtu</b>.",4],["Babička peče <b>koláč</b>.",4],["Šli jsme k <b>babičce</b>.",3],
+ ["Dům stojí u <b>lesa</b>.",2],["Píšu <b>perem</b>.",7],["Mluvili jsme o <b>prázdninách</b>.",6],["<b>Maminko</b>, pomoz mi!",5],["<b>Pes</b> štěká na kočku.",1],
+ ["Pes štěká na <b>kočku</b>.",4],["Jedu za <b>dědečkem</b>.",7],["Dostal jsem dárek od <b>tety</b>.",2],["Přišel ke <b>kamarádovi</b>.",3],["Sedíme na <b>lavičce</b>.",6],
+ ["V zoo vidím <b>slony</b>.",4],["Fotili jsme se se <b>slony</b>.",7],["Bez <b>čepice</b> je zima.",2],["<b>Kamarádi</b>, pojďte si hrát!",5],["V <b>knihovně</b> je ticho.",6],
+ ["Hrajeme si s <b>míčem</b>.",7],["Ke <b>škole</b> vede cesta.",3],["<b>Děti</b> běží na hřiště.",1],["Těším se na <b>výlet</b>.",4],["Psali jsme <b>babičce</b> dopis.",3],
+ ["Dědeček zpívá ve <b>sboru</b>.",6],["Šel jsem tam bez <b>kamarádek</b>.",2],["<b>Sourozenci</b> si spolu povídají.",1],["Nechce si povídat se <b>sourozenci</b>.",7],
+];
+
+const cz4 = {
+  vyjm4(){const [w,e]=pick(VYJM4);return Object.assign(gapQ(w,IY,"Doplň i / í nebo y / ý",null),{hint:e})},
+  syn(){
+    const pool=SYN.filter(x=>x[1]),[w,s,a]=pick(pool);
+    const dist=shuffle(SYN.filter(x=>x[0]!==w&&x[1]&&x[1]!==s).map(x=>x[1])).slice(0,a?2:3);
+    return {type:"choice",label:"Najdi slovo souznačné (stejný nebo podobný význam)",text:w,answer:s,choices:[s,...(a?[a]:[]),...dist],words:true,
+      hint:`Slova souznačná mají stejný nebo podobný význam: ${w} – ${s}.${a?` Slovo „${a}“ je protikladné.`:""}`}},
+  proti(){
+    const pool=SYN.filter(x=>x[2]),[w,s,a]=pick(pool);
+    const dist=shuffle(SYN.filter(x=>x[0]!==w&&x[2]&&x[2]!==a).map(x=>x[2])).slice(0,s?2:3);
+    return {type:"choice",label:"Najdi slovo protikladné (opačný význam)",text:w,answer:a,choices:[a,...(s?[s]:[]),...dist],words:true,
+      hint:`Slova protikladná mají opačný význam: ${w} – ${a}.${s?` Slovo „${s}“ je souznačné.`:""}`}},
+  nadraz(){
+    const [nad,pod]=pick(NADRAZ),t=R(0,2),oth=NADRAZ.filter(x=>x[0]!==nad);
+    if(t===0){const ws=shuffle(pod).slice(0,3);
+      return {type:"choice",label:"Které slovo je nadřazené?",text:ws.join(", "),answer:nad,choices:[nad,...shuffle(oth).slice(0,3).map(x=>x[0])],words:true,
+        hint:`Všechna tato slova patří do skupiny „${nad}“.`}}
+    if(t===1){const ws=shuffle(pod).slice(0,3),o=pick(oth),intr=pick(o[1]);
+      return {type:"choice",label:"Které slovo sem nepatří?",text:"🤔",answer:intr,choices:[...ws,intr],words:true,
+        hint:`${ws.join(", ")} jsou slova souřadná – všechna patří mezi ${nad}. „${intr}“ patří mezi ${o[0]}.`}}
+    const w=pick(pod);
+    return {type:"choice",label:`Které slovo je podřazené slovu „${nad.toUpperCase()}“?`,text:nad,answer:w,choices:[w,...shuffle(oth).slice(0,3).map(x=>pick(x[1]))],words:true,
+      hint:`„${w}“ patří mezi ${nad}.`}},
+  mnoho(){
+    const [d,w]=pick(MNOHO);
+    return {type:"choice",label:"Které slovo má oba významy?",text:d,long:true,answer:w,choices:[w,...others(MNOHO.map(x=>x[1]),w)],words:true,
+      hint:`Slovo „${w}“ je mnohoznačné – význam poznáme ze souvislosti.`}},
+  spis(){
+    const [n,s]=pick(SPIS);
+    if(Math.random()<.55){const w=Math.random()<.5?n:s,ok=w===s?"spisovné":"nespisovné";
+      return {type:"choice",label:"Je slovo spisovné, nebo nespisovné?",text:w,answer:ok,choices:["spisovné","nespisovné"],fixedOrder:true,words:true,
+        hint:w===s?`„${s}“ je spisovné slovo.`:`„${n}“ je nespisovné, spisovně řekneme „${s}“.`}}
+    return {type:"choice",label:"Jak to řekneme spisovně?",text:n,answer:s,choices:[s,...others(SPIS.map(x=>x[1]),s)],words:true,
+      hint:`Spisovně: ${s}.`}},
+  koren(){
+    const [k,ws,ch]=pick(KOREN),sel=shuffle(ws).slice(0,3);
+    return {type:"choice",label:"Najdi společný kořen slov",text:sel.join(", "),answer:k,choices:[k,...ch.filter(x=>x!==k).slice(0,3)],words:true,
+      hint:`Kořen je nejmenší společná část slov příbuzných: ${sel.map(w=>w.replace(k,`[${k}]`)).join(", ")}.`}},
+  predlozka(){
+    const [z,ok]=pick(PREDL),parts=z.match(/^\((.+?)\)(.+)$/),joined=parts[1]+parts[2],sep=parts[1]+" "+parts[2];
+    return {type:"choice",label:"Předpona (dohromady), nebo předložka (zvlášť)?",text:z,answer:ok,choices:[joined,sep],fixedOrder:true,words:true,
+      hint:ok===joined?`„${parts[1]}“ je tu předpona – píše se dohromady se slovem.`:`„${parts[1]}“ je tu předložka – samostatné slovo, píše se zvlášť.`}},
+  predpony(){
+    const d=Math.random()<.5,w=d?pick(PREDP_D):pick(PREDP_Z);
+    return Object.assign(gapQ(w,d?["d","t"]:["z","s"],d?"Doplň d nebo t":"Doplň z nebo s",null),
+      {hint:d?"Předpony a předložky od, nad, pod, před píšeme vždy s d.":"Předpony vz-, roz-, bez- a předložku bez píšeme vždy se z."})},
+  eje4(){
+    const w=pick(EJE4),g=gapWord(w);
+    return Object.assign(gapQ(w,["ě","je"],"Doplň ě nebo je",null),{hint:g.ans==="je"
+      ?"Předpona ob- nebo v- + kořen, který začíná na je (jet, jem, jezdit…) → píšeme je."
+      :"Píšeme ě (bě, vě, pě). Je jen když po předponě ob- / v- začíná kořen na je."})},
+  vyvi(){
+    const w=pick(VYVI),g=gapWord(w),y=/[yý]/.test(g.ans);
+    return Object.assign(gapQ(w,IY,"Doplň i / í nebo y / ý",null),{hint:w==="v[y]soký"?"Vysoký je vyjmenované slovo."
+      :y?"Předpona vy-/vý- se píše vždy s y/ý.":`„${g.full}“ nemá předponu vy-, proto i/í.`})},
+  pady(){
+    const [v,p]=pick(PADVETY);
+    return {type:"choice",label:"Ve kterém pádě je tučné slovo?",text:v,long:true,answer:PADY[p-1],choices:PADY,fixedOrder:true,words:true,
+      hint:`${p}. pád – ${PADQ[p-1]}`}},
+};
+
+/* ============ ANGLIČTINA ============ */
+const DAYS=[["Monday","pondělí"],["Tuesday","úterý"],["Wednesday","středa"],["Thursday","čtvrtek"],["Friday","pátek"],["Saturday","sobota"],["Sunday","neděle"]];
+const ACTS=[["do","gymnastics","🤸","cvičit gymnastiku"],["go","to school","🏫","chodit do školy"],["play","basketball","🏀","hrát basketbal"],["have","a music lesson","🎵","mít hudební výchovu"],
+ ["play","football","⚽","hrát fotbal"],["go","swimming","🏊","chodit plavat"],["play","tennis","🎾","hrát tenis"],["have","breakfast","🥣","snídat"],["do","homework","📝","dělat úkoly"],
+ ["play","the guitar","🎸","hrát na kytaru"],["go","shopping","🛒","chodit nakupovat"],["have","lunch","🍽️","obědvat"],["do","karate","🥋","dělat karate"],["go","to bed","🛏️","jít spát"]];
+const ANIMALS=[["tiger","tygr","🐯"],["crocodile","krokodýl","🐊"],["elephant","slon","🐘"],["giraffe","žirafa","🦒"],["monkey","opice","🐒"],["lion","lev","🦁"],
+ ["snake","had","🐍"],["zebra","zebra","🦓"],["bear","medvěd","🐻"],["parrot","papoušek","🦜"],["penguin","tučňák","🐧"],["kangaroo","klokan","🦘"],
+ ["hippo","hroch","🦛"],["frog","žába","🐸"],["dolphin","delfín","🐬"],["shark","žralok","🦈"],["owl","sova","🦉"],["panda","panda","🐼"]];
+const BE=[["This ___ a tiger.","is"],["Tigers ___ orange, black and white.","are"],["They ___ long tails.","have got"],["A crocodile ___ big teeth.","has got"],
+ ["There ___ tigers in India.","are"],["There ___ any tigers in Australia.","aren't"],["Crocodiles ___ green and brown.","are"],["It ___ a long tail.","has got"],
+ ["This ___ a crocodile.","is"],["Elephants ___ big ears.","have got"],["The giraffe ___ tall.","is"],["There ___ any crocodiles in China.","aren't"],
+ ["I ___ a dog.","have got"],["She ___ a cat.","has got"],["We ___ friends.","are"],["My sister ___ ten.","is"]];
+const CAPS=[["There are tigers in India.",["India"]],["Crocodiles live in Australia.",["Australia"]],["Pandas live in China.",["China"]],["This is a tiger.",[]],
+ ["We play basketball on Friday.",["Friday"]],["I go to school on Monday.",["Monday"]],["Kangaroos live in Australia.",["Australia"]],["They can jump and swim.",[]],
+ ["My friend is from England.",["England"]],["On Sunday we go out.",["Sunday"]],["Tigers have got long tails.",[]],["There aren't any tigers in Africa.",["Africa"]]];
+
+const en = {
+  days(){
+    const i=R(0,6),t=R(0,2);
+    if(t===0) return {type:"choice",label:"Jak se to řekne anglicky?",text:DAYS[i][1],answer:DAYS[i][0],choices:[DAYS[i][0],...others(DAYS.map(d=>d[0]),DAYS[i][0])],words:true};
+    if(t===1) return {type:"choice",label:"Co to znamená česky?",text:DAYS[i][0],answer:DAYS[i][1],choices:[DAYS[i][1],...others(DAYS.map(d=>d[1]),DAYS[i][1])],words:true};
+    const n=DAYS[(i+1)%7][0];
+    return {type:"choice",label:"Which day comes next? (Který den je další?)",text:`${DAYS[i][0]} → ?`,answer:n,choices:[n,...others(DAYS.map(d=>d[0]),n)],words:true,
+      hint:"Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday."}},
+  acts(){
+    const [v,o,e,cz]=pick(ACTS);
+    if(Math.random()<.6) return Object.assign(gapQ(`[${v}] ${o}`,["do","play","go","have"],`${e} Doplň sloveso – ${cz}`,null),{fixedOrder:true,choices:["do","play","go","have"],
+      hint:`Říkáme „${v} ${o}“. Pozor: play basketball, do gymnastics, go to school, have a lesson.`});
+    const all=ACTS.map(a=>a[0]+" "+a[1]),ok=v+" "+o;
+    return {type:"choice",label:"Co dělá? Vyber správnou frázi.",text:e,answer:ok,choices:[ok,...others(all,ok)],words:true,hint:`${e} = ${ok} (${cz})`}},
+  animals(){
+    const [w,cz,e]=pick(ANIMALS);
+    if(Math.random()<.5) return {type:"choice",label:"What animal is it?",text:e,answer:w,choices:[w,...others(ANIMALS.map(a=>a[0]),w)],words:true,hint:`${e} = ${w} (${cz})`};
+    return {type:"choice",label:"Jak se to řekne anglicky?",text:cz,answer:w,choices:[w,...others(ANIMALS.map(a=>a[0]),w)],words:true};
+  },
+  be(){
+    const [s,a]=pick(BE),neg=a==="aren't";
+    const ch=neg?["are","aren't","is","isn't"]:["is","are","has got","have got"];
+    return {type:"choice",label:"Choose the right word (vyber správné slovo)",text:s.replace("___",'<span class="gap">&nbsp;</span>'),answer:a,choices:ch,fixedOrder:true,words:true,
+      hint:a==="is"?"Jedna věc/zvíře → is.":a==="are"?"Více věcí nebo we/they → are.":a==="has got"?"He / she / it → has got.":a==="have got"?"I / we / they a více zvířat → have got.":"Zápor: there aren't any…"}},
+  caps(){
+    const [s,props]=pick(CAPS),wr=new Set();
+    wr.add(s[0].toLowerCase()+s.slice(1));
+    props.forEach(p=>wr.add(s.replace(p,p.toLowerCase())));
+    wr.add(s.slice(0,-1));
+    if(wr.size<3){const ws=s.split(" ");const k=R(1,ws.length-1);ws[k]=ws[k][0].toUpperCase()+ws[k].slice(1);wr.add(ws.join(" "))}
+    const ch=[s,...shuffle([...wr].filter(x=>x!==s)).slice(0,3)];
+    return {type:"choice",label:"Which sentence is correct? (Která věta je správně?)",text:"✍️",answer:s,choices:ch,words:true,
+      hint:"Velké písmeno na začátku věty, u zemí a dnů (India, Monday). Na konci věty tečka."}},
+};
+
+/* ============ PŘÍRODOVĚDA ============ */
+const KVET=[
+ ["K čemu slouží květ?","k rozmnožování",["k dýchání","k přijímání vody","k ukládání zásob"]],
+ ["Které jsou nejdůležitější části květu?","tyčinky a pestík",["kořen a stonek","listy a lodyha","okvětní lístky a stopka"]],
+ ["V čem vznikají pylová zrna?","v tyčinkách",["v pestíku","v kořeni","v listech"]],
+ ["Kde je ukryta samičí pohlavní buňka?","v pestíku",["v tyčinkách","v pylu","v listech"]],
+ ["Pylová zrna jsou…","samčí pohlavní buňky",["samičí pohlavní buňky","semena","malé plody"]],
+ ["Co je opylení?","přenesení pylu z tyčinek na pestík",["spojení samčí a samičí buňky","vznik semene","opadání květů"]],
+ ["Co je oplození?","spojení samčí a samičí pohlavní buňky",["přenesení pylu větrem","rozkvetení květu","dozrání plodu"]],
+ ["Co vznikne po oplození?","plod se semeny",["nový květ","pylová zrna","kořen"]],
+ ["Čím se může uskutečnit opylování?","větrem, vodou nebo živočichy",["jen větrem","jen deštěm","jen sluncem"]],
+ ["Kdo patří mezi nejdůležitější opylovače?","hmyz",["ryby","žížaly","ještěrky"]],
+ ["Proč bývá květ barevný?","aby přilákal opylovače",["aby ho zvířata nesnědla","aby se zahřál","aby rychleji rostl"]],
+ ["Co je uloženo v plodu?","semena",["pylová zrna","tyčinky","kořínky"]],
+ ["Čím jsou semena kryta?","oplodím",["pestíkem","kůrou","listy"]],
+ ["Podle oplodí dělíme plody na…","dužnaté a suché",["velké a malé","sladké a kyselé","jedlé a jedovaté"]],
+ ["Který plod má jen jedno semeno?","třešeň",["rajče","okurka","paprika"]],
+ ["Který plod má více semen?","rajče",["třešeň","švestka","broskev"]],
+ ["Který hmyz je známý opylovač?","včela medonosná",["mravenec","komár","moucha domácí"]],
+];
+const PLODY=[["broskev","peckovice"],["třešeň","peckovice"],["švestka","peckovice"],["meruňka","peckovice"],["višeň","peckovice"],
+ ["jablko","malvice"],["hruška","malvice"],["kdoule","malvice"],["rajče","bobule"],["borůvka","bobule"],["rybíz","bobule"],["hroznové víno","bobule"],["angrešt","bobule"],
+ ["pšenice","obilka"],["ječmen","obilka"],["žito","obilka"],["kukuřice","obilka"],["oves","obilka"],["lískový oříšek","oříšek"],["žalud","oříšek"],
+ ["hrách","lusk"],["fazole","lusk"],["čočka","lusk"],["sója","lusk"]];
+const TYPY=["peckovice","malvice","bobule","obilka","oříšek","lusk"],DUZ=["peckovice","malvice","bobule"];
+const pr = {
+  kvet(){const [q,a,d]=pick(KVET);return {type:"choice",label:"🌸 Květ a plod",text:q,long:true,answer:a,choices:[a,...d],words:true}},
+  plody(){
+    const [p,t]=pick(PLODY),duz=DUZ.includes(t);
+    if(Math.random()<.4) return {type:"choice",label:"Je plod dužnatý, nebo suchý?",text:p,answer:duz?"dužnatý":"suchý",choices:["dužnatý","suchý"],fixedOrder:true,words:true,
+      hint:`${p} je ${t} – ${duz?"dužnaté plody: peckovice, malvice, bobule":"suché plody: obilka, oříšek, lusk"}.`};
+    return {type:"choice",label:"Jaký je to plod?",text:p,answer:t,choices:TYPY,fixedOrder:true,words:true,
+      hint:`${p} – ${t}. Dužnaté: peckovice, malvice, bobule. Suché: obilka, oříšek, lusk.`}},
+};
+
 /* ============ přehled témat ============ */
 const TOPICS = [
   {id:"m-add20",s:"m",g:[2],ico:"➕",t:"Sčítání a odčítání do 20",d:"Rozcvička z hlavy",gen:mathGen.add20},
@@ -431,6 +769,36 @@ const TOPICS = [
   {id:"c-vyj",s:"c",g:[3,4],ico:"📜",t:"Vyjmenovaná slova",d:"Po b, l, m, p, s, v, z",gen:czGen.vyjm},
   {id:"c-dr4",s:"c",g:[3],ico:"🏷️",t:"Slovní druhy – základ",d:"Podst. jm., příd. jm., sloveso, příslovce",gen:czGen.druhy4},
   {id:"c-dr",s:"c",g:[4],ico:"🔟",t:"Všechny slovní druhy",d:"Všech 10 slovních druhů",gen:czGen.druhy},
+
+  /* 4. třída – doplněno podle pracovních sešitů */
+  {id:"m4-poradi",s:"m",g:[4],ico:"🥇",t:"Pořadí početních operací",d:"Nejdřív · a :, pak + a −",gen:math4.poradi},
+  {id:"m4-zav",s:"m",g:[4],ico:"( )",t:"Příklady se závorkami",d:"Nejdřív to, co je v závorce",gen:math4.zavorky},
+  {id:"m4-poradiV",s:"m",g:[4],ico:"🏛️",t:"Pořadí operací – větší čísla",d:"Např. 30 · 70 + 1 300",gen:math4.poradiVelka},
+  {id:"m4-nasmimo",s:"m",g:[4],ico:"🧩",t:"Násobení mimo násobilku",d:"Např. 45 · 5 = 40 · 5 + 5 · 5",gen:math4.nasMimo},
+  {id:"m4-nuly",s:"m",g:[4],ico:"0️⃣",t:"Násobení a dělení s nulami",d:"80 · 70, 2 400 : 40",gen:math4.nuly},
+  {id:"m4-slovni",s:"m",g:[4],ico:"🧠",t:"Slovní úlohy – více kroků",d:"Muzeum, vstupenky, nákupy",gen:math4.slovni4},
+
+  {id:"c4-vyj",s:"c",g:[4],ico:"🖋️",t:"Vyjmenovaná slova ve spojeních",d:"i/y i ve slovech příbuzných",gen:cz4.vyjm4},
+  {id:"c4-syn",s:"c",g:[4],ico:"🤝",t:"Slova souznačná",d:"pěkný – hezký",gen:cz4.syn},
+  {id:"c4-proti",s:"c",g:[4],ico:"↔️",t:"Slova protikladná",d:"velký – malý",gen:cz4.proti},
+  {id:"c4-nad",s:"c",g:[4],ico:"🌳",t:"Nadřazená a podřazená slova",d:"obuv – tenisky, holínky",gen:cz4.nadraz},
+  {id:"c4-mnoho",s:"c",g:[4],ico:"🎩",t:"Slova mnohoznačná",d:"klobouk, kolo, koník…",gen:cz4.mnoho},
+  {id:"c4-spis",s:"c",g:[4],ico:"🎤",t:"Spisovná a nespisovná slova",d:"modrej × modrý",gen:cz4.spis},
+  {id:"c4-koren",s:"c",g:[4],ico:"🌱",t:"Kořen slova",d:"lesík, lesník, zalesnit",gen:cz4.koren},
+  {id:"c4-predl",s:"c",g:[4],ico:"🔗",t:"Předpona, nebo předložka?",d:"odpadky × od sestry",gen:cz4.predlozka},
+  {id:"c4-predp",s:"c",g:[4],ico:"🧷",t:"Předpony od-, nad-, pod-, před-, vz-, roz-, bez-",d:"d nebo t? z nebo s?",gen:cz4.predpony},
+  {id:"c4-eje",s:"c",g:[4],ico:"🏃",t:"bě/bje, vě/vje, pě",d:"oběd × objet",gen:cz4.eje4},
+  {id:"c4-vy",s:"c",g:[4],ico:"🪄",t:"Předpony vy-, vý-",d:"vyčarovat × vidět",gen:cz4.vyvi},
+  {id:"c4-pady",s:"c",g:[4],ico:"7️⃣",t:"Pády podstatných jmen",d:"Kdo? co? … S kým? čím?",gen:cz4.pady},
+
+  {id:"a-days",s:"a",g:[4],ico:"📅",t:"Days of the week",d:"Dny v týdnu",gen:en.days},
+  {id:"a-acts",s:"a",g:[4],ico:"🏀",t:"My busy week",d:"do, play, go, have",gen:en.acts},
+  {id:"a-anim",s:"a",g:[4],ico:"🐯",t:"Animals",d:"Zvířata",gen:en.animals},
+  {id:"a-be",s:"a",g:[4],ico:"🐊",t:"is / are / has got",d:"Animal fact file",gen:en.be},
+  {id:"a-caps",s:"a",g:[4],ico:"✍️",t:"Capital letters and full stops",d:"Velká písmena a tečka",gen:en.caps},
+
+  {id:"p-kvet",s:"p",g:[4],ico:"🌸",t:"Květ, opylení, oplození",d:"Tyčinky a pestík",gen:pr.kvet},
+  {id:"p-plody",s:"p",g:[4],ico:"🍑",t:"Plody dužnaté a suché",d:"Peckovice, malvice, bobule…",gen:pr.plody},
 ];
 const QN = 10;
 
@@ -443,7 +811,7 @@ function starsFor(score){return score>=QN?3:score>=8?2:score>=5?1:0}
 function totalStars(k=kid()){return Object.values(k.best).reduce((a,b)=>a+starsFor(b),0)}
 
 function render(){
-  document.body.className = S.subject? (S.subject==="m"?"m-theme":"c-theme") : "";
+  document.body.className = S.subject? SUBJ[S.subject].cls : "";
   document.body.style.backgroundColor = kid().color;
   if(S.screen==="home") return renderHome();
   if(S.screen==="settings") return renderSettings();
@@ -477,8 +845,8 @@ function renderHome(){
       <button class="calbtn" id="cal">📅 Kalendář</button>
     </div>
     <div class="subjects">
-      <button class="subject m" data-s="m"><div class="ico">🔢</div><div><div class="nm">Matematika</div><div class="sub">${TOPICS.filter(t=>t.s==="m"&&gradeOk(t)).length} cvičení</div></div></button>
-      <button class="subject c" data-s="c"><div class="ico">📚</div><div><div class="nm">Čeština</div><div class="sub">${TOPICS.filter(t=>t.s==="c"&&gradeOk(t)).length} cvičení</div></div></button>
+      ${Object.entries(SUBJ).map(([key,x])=>{const n=TOPICS.filter(t=>t.s===key&&gradeOk(t)).length;return n?`
+      <button class="subject ${key}" data-s="${key}"><div class="ico">${x.ico}</div><div><div class="nm">${x.nm}</div><div class="sub">${n} cvičení</div></div></button>`:""}).join("")}
     </div>
     <div class="hero" style="margin-top:16px">Každé cvičení má ${QN} příkladů. Za 5 správně je ⭐, za 8 ⭐⭐ a bez chyby ⭐⭐⭐.</div>`;
   app.querySelectorAll(".pbtn").forEach(b=>b.onclick=()=>{store.cur=+b.dataset.k;save();renderHome()});
@@ -604,7 +972,7 @@ function renderCalendar(){
 function renderTopics(){
   const list=TOPICS.filter(t=>t.s===S.subject&&gradeOk(t));
   app.innerHTML=`
-    <div class="top"><button class="back" id="bk">‹</button><h1>${S.subject==="m"?"🔢 Matematika":"📚 Čeština"}</h1>
+    <div class="top"><button class="back" id="bk">‹</button><h1>${SUBJ[S.subject].ico} ${SUBJ[S.subject].nm}</h1>
       <span class="pill">${kid().ico} ${esc(kid().name)}</span></div>
     <div class="tiles">${list.map(t=>`
       <button class="tile" data-id="${t.id}"><div class="ti">${t.ico}</div><div>
@@ -625,7 +993,7 @@ function nextQ(){
   if(q.choices&&!q.fixedOrder) q.choices=shuffle(q.choices);
   S.q=q;S.input="";S.locked=false;S.first=true;render();
 }
-function qKey(q){return (q.sentence||"")+(q.text||"")+(q.pre||"")+(q.post||"")+(q.vert||"")}
+function qKey(q){return (q.sentence||"")+(q.text||"")+(q.pre||"")+(q.post||"")+(q.vert||"")+(q.type==="choice"?"|"+q.answer:"")}
 
 function splitHTML(q,res){
   let h="";
@@ -728,8 +1096,9 @@ function check(ok,given){
   const fb=document.getElementById("fb");
   const praise=pick(["Výborně! 🎉","Správně! 👏","Super! ⭐","Paráda! 💪","Přesně tak! ✅"]);
   fb.className="feedback "+(ok?"ok":"bad");
+  const why=q.explain||q.hint;
   fb.innerHTML= ok ? `${praise}${q.explain?`<small>${esc(q.explain)}</small>`:""}`
-    : `Správně je: <b>${esc(q.type==="num"?fmt(q.answer):q.answer)}</b>${q.explain?`<small>${esc(q.explain)}</small>`:""}`;
+    : `Správně je: <b>${esc(q.type==="num"?fmt(q.answer):q.answer)}</b>${why?`<small>${esc(why)}</small>`:""}`;
   if(ok && !q.explain){ setTimeout(advance,900) }
   else {
     const c=document.getElementById("cont");
