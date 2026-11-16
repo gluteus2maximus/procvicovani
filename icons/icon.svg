@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="30%" r="80%">
+      <stop offset="0" stop-color="#8fd0ff"/>
+      <stop offset="1" stop-color="#3b6fe0"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#fff6b0" stop-opacity=".95"/>
+      <stop offset=".55" stop-color="#ffe066" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#ffe066" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bulb" cx="40%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#fffbe0"/>
+      <stop offset=".5" stop-color="#ffe14d"/>
+      <stop offset="1" stop-color="#ffb800"/>
+    </radialGradient>
+    <radialGradient id="skin" cx="45%" cy="40%" r="65%">
+      <stop offset="0" stop-color="#ffe0c4"/>
+      <stop offset="1" stop-color="#f6b98e"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <!-- světlo žárovky -->
+  <circle cx="430" cy="215" r="250" fill="url(#glow)"/>
+  <g stroke="#fff3a0" stroke-width="22" stroke-linecap="round">
+    <line x1="430" y1="20" x2="430" y2="62"/>
+    <line x1="270" y1="80" x2="298" y2="110"/>
+    <line x1="590" y1="80" x2="562" y2="110"/>
+    <line x1="215" y1="225" x2="255" y2="225"/>
+    <line x1="645" y1="225" x2="605" y2="225"/>
+  </g>
+
+  <!-- žárovka -->
+  <path d="M430 92 C500 92 548 145 548 205 C548 250 522 275 505 300 C495 315 492 328 492 342 L368 342 C368 328 365 315 355 300 C338 275 312 250 312 205 C312 145 360 92 430 92 Z" fill="url(#bulb)" stroke="#e8a200" stroke-width="8"/>
+  <path d="M400 330 L400 290 L413 250 L426 290 L439 250 L452 290 L460 290 L460 330" fill="none" stroke="#f59e0b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="385" cy="168" rx="22" ry="38" fill="#fff" opacity=".85" transform="rotate(25 385 168)"/>
+  <rect x="368" y="342" width="124" height="26" rx="8" fill="#9aa4b5"/>
+  <rect x="374" y="368" width="112" height="22" rx="8" fill="#7d879a"/>
+  <rect x="380" y="390" width="100" height="20" rx="8" fill="#9aa4b5"/>
+  <path d="M405 410 L455 410 L442 428 L418 428 Z" fill="#5d6577"/>
+
+  <!-- tričko a ramena -->
+  <path d="M150 1024 C160 900 260 850 430 850 C600 850 700 900 712 1024 Z" fill="#e2558a"/>
+  <path d="M370 852 Q430 900 490 852" fill="none" stroke="#c43e72" stroke-width="12" stroke-linecap="round"/>
+
+  <!-- zdvižená ruka -->
+  <path d="M640 1024 C650 930 690 860 735 780 L795 610" fill="none" stroke="#f6b98e" stroke-width="96" stroke-linecap="round"/>
+  <path d="M600 1024 C612 950 640 905 672 868 L748 900 C720 950 705 990 700 1024 Z" fill="#e2558a"/>
+  <!-- ukazováček -->
+  <rect x="772" y="330" width="58" height="210" rx="29" fill="url(#skin)" stroke="#d99566" stroke-width="6"/>
+  <path d="M788 352 Q801 342 814 352" fill="none" stroke="#fff1e4" stroke-width="8" stroke-linecap="round"/>
+  <!-- pěst -->
+  <rect x="728" y="480" width="150" height="150" rx="58" fill="url(#skin)" stroke="#d99566" stroke-width="6"/>
+  <path d="M760 520 Q800 510 850 522 M758 560 Q800 550 852 562 M762 598 Q800 590 846 600" fill="none" stroke="#d99566" stroke-width="6" stroke-linecap="round"/>
+  <!-- palec -->
+  <path d="M732 560 C700 545 700 505 735 498 L775 505" fill="url(#skin)" stroke="#d99566" stroke-width="6" stroke-linejoin="round"/>
+
+  <!-- hlava -->
+  <circle cx="225" cy="650" r="52" fill="#f6b98e"/>
+  <circle cx="635" cy="650" r="52" fill="#f6b98e"/>
+  <circle cx="430" cy="640" r="220" fill="url(#skin)"/>
+  <!-- vlasy -->
+  <path d="M212 640 C200 470 300 405 430 405 C565 405 665 470 650 640 C640 575 610 540 575 525 C560 560 520 572 480 548 C470 575 420 585 385 558 C360 590 300 590 270 545 C240 565 222 600 212 640 Z" fill="#7a4a2a"/>
+  <path d="M330 430 C315 405 330 380 360 388" fill="none" stroke="#7a4a2a" stroke-width="18" stroke-linecap="round"/>
+
+  <!-- obočí zdvižené -->
+  <path d="M310 570 Q350 540 392 560" fill="none" stroke="#6b3f22" stroke-width="16" stroke-linecap="round"/>
+  <path d="M468 560 Q510 540 550 570" fill="none" stroke="#6b3f22" stroke-width="16" stroke-linecap="round"/>
+  <!-- oči -->
+  <ellipse cx="352" cy="625" rx="36" ry="44" fill="#fff"/>
+  <ellipse cx="508" cy="625" rx="36" ry="44" fill="#fff"/>
+  <circle cx="358" cy="620" r="25" fill="#3a2a1e"/>
+  <circle cx="502" cy="620" r="25" fill="#3a2a1e"/>
+  <circle cx="368" cy="608" r="9" fill="#fff"/>
+  <circle cx="512" cy="608" r="9" fill="#fff"/>
+  <!-- tváře -->
+  <ellipse cx="290" cy="705" rx="38" ry="24" fill="#ff8fa3" opacity=".6"/>
+  <ellipse cx="570" cy="705" rx="38" ry="24" fill="#ff8fa3" opacity=".6"/>
+  <!-- nos -->
+  <path d="M422 668 Q432 690 444 668" fill="none" stroke="#d99566" stroke-width="9" stroke-linecap="round"/>
+  <!-- nadšený úsměv -->
+  <path d="M335 720 Q430 735 525 720 Q520 830 430 832 Q340 830 335 720 Z" fill="#7a1f2b"/>
+  <path d="M352 726 Q430 738 508 726 L503 752 Q430 760 357 752 Z" fill="#fff"/>
+  <path d="M378 800 Q430 770 482 800 Q460 828 430 830 Q400 828 378 800 Z" fill="#ff7a8a"/>
+</svg>
