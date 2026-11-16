@@ -210,6 +210,13 @@ body{transition:background-color .3s}
 .legend2 i{width:20px;height:20px;border-radius:6px;display:inline-block}
 .goalmsg{margin:10px auto 0;max-width:520px;border-radius:16px;padding:12px 16px;font-size:20px;font-weight:900;background:var(--ok-soft);color:var(--ok)}
 .earned{font-size:20px;font-weight:800;color:var(--muted);margin-top:4px}
+/* pořádek slov */
+.ord-line{min-height:84px;border:3px dashed #e4dccd;border-radius:20px;padding:10px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin-top:6px}
+.ord-line.ok{border-color:var(--ok);background:var(--ok-soft)} .ord-line.bad{border-color:var(--bad);background:var(--bad-soft)}
+.ord-pool{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:16px;min-height:64px}
+.wbtn{background:var(--card);box-shadow:var(--shadow);border-radius:16px;padding:12px 18px;font-size:28px;font-weight:900;transition:transform .08s}
+.ord-line .wbtn{background:#f6f2ea}
+.wbtn:active{transform:translateY(2px) scale(.99)}
 @keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
 .pop{animation:pop .35s ease-out}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
@@ -742,6 +749,158 @@ const pr = {
 };
 
 /* ============ přehled témat ============ */
+
+/* ============ 2. TŘÍDA – doplněno podle pracovních sešitů ============ */
+const math2 = {
+  prechod(){
+    const t=R(0,4);
+    if(t===0||t===3){const a=R(3,9),b=R(Math.max(2,11-a),9),d=10-a,r=b-d;
+      if(t===0) return numQ(`${a} + ${b} = ?`,a+b,{label:"Sčítání přes desítku",hint:`${b} rozložíme na ${d} a ${r}: ${a} + ${d} = 10, 10 + ${r} = ${a+b}.`});
+      return numQ(`${a} + ${b} = ${a} + ${d} + ▢`,r,{label:"Doplň rozklad",hint:`Nejdřív doplníme do 10: ${a} + ${d} = 10. Zbývá přičíst ${b} − ${d} = ${r}.`});}
+    const a=R(11,18),u=a-10,b=R(u+1,9),r=b-u;
+    if(t===1) return numQ(`${a} − ${b} = ?`,a-b,{label:"Odčítání přes desítku",hint:`${b} rozložíme na ${u} a ${r}: ${a} − ${u} = 10, 10 − ${r} = ${a-b}.`});
+    if(t===2) return numQ(`${a} − ${b} = ${a} − ${u} − ▢`,r,{label:"Doplň rozklad",hint:`Nejdřív odečteme do 10: ${a} − ${u} = 10. Zbývá odečíst ${b} − ${u} = ${r}.`});
+    const v=R(0,2);
+    if(v===0){const x=R(3,9),y=R(Math.max(2,11-x),9);return numQ(`${x} + ▢ = ${x+y}`,y,{label:"Které číslo chybí?",hint:`${x} + ${y} = ${x+y}`})}
+    if(v===1) return numQ(`${a} − ▢ = ${a-b}`,b,{label:"Které číslo chybí?",hint:`${a} − ${b} = ${a-b}`});
+    return numQ(`▢ − ${b} = ${a-b}`,a,{label:"Které číslo chybí?",hint:`${a-b} + ${b} = ${a}, takže ${a} − ${b} = ${a-b}.`});
+  },
+  tri(){
+    const t=R(0,3);
+    if(t<=1){
+      const x=t===1?pick([1,2,3,4,6,7,8,9]):R(1,9);let c;do{c=R(1,9)}while(c===x||c===10-x);
+      const parts=shuffle([x,10-x,c]);
+      if(t===0) return numQ(`${parts.join(" + ")} = ?`,10+c,{label:"Počítej výhodně",hint:`Nejdřív ${x} + ${10-x} = 10, pak 10 + ${c} = ${10+c}.`});
+      const [p,q,r]=parts,pairs=[`${p} + ${q}`,`${p} + ${r}`,`${q} + ${r}`],sums=[p+q,p+r,q+r];
+      return {type:"choice",label:"Co sečteš nejdřív, aby se to počítalo snadno?",text:parts.join(" + "),answer:pairs[sums.indexOf(10)],choices:pairs,
+        hint:`Nejlépe se počítá, když nejdřív dáme dohromady 10: ${x} + ${10-x} = 10.`};
+    }
+    if(t===2){const s=R(10,15);let a,b;do{a=R(1,9);b=R(1,9)}while(a+b>=s||s-a-b>9);
+      return numQ(`${a} + ${b} + ▢ = ${s}`,s-a-b,{label:`Doplň třetí číslo, aby součet byl ${s}`,hint:`${a} + ${b} = ${a+b}, do ${s} chybí ${s-a-b}.`})}
+    let a,b,c;do{a=R(1,9);b=R(1,9);c=R(1,9)}while(a+b+c>20);
+    return numQ(`${a} + ${b} + ${c} = ?`,a+b+c,{label:"Sčítání tří čísel",hint:`${a} + ${b} = ${a+b}, ${a+b} + ${c} = ${a+b+c}`});
+  },
+};
+
+/* druhy vět: [oznamovací, tázací, rozkazovací, přací] (null = tvar nepoužíváme) */
+const VETY4 = [
+ ["Marcela vynesla koš s odpadky.","Vynesla Marcela koš s odpadky?","Marcelo, vynes koš s odpadky!","Kéž by Marcela vynesla koš s odpadky!"],
+ ["Ondra si umyl ruce.","Umyl si Ondra ruce?","Ondro, umyj si ruce!","Kéž by si Ondra umyl ruce!"],
+ ["Babička nám upekla koláč.","Upekla nám babička koláč?","Babičko, upeč nám koláč!","Kéž by nám babička upekla koláč!"],
+ ["Děda podává tatínkovi šroubovák.","Podává děda tatínkovi šroubovák?","Dědo, podej tatínkovi šroubovák!","Kéž by děda podal tatínkovi šroubovák!"],
+ ["Gepard tiše běhá.","Běhá gepard tiše?","Geparde, běhej tiše!","Kéž by gepard tiše běhal!"],
+ ["Vladan napsal úkol.","Napsal Vladan úkol?","Vladane, napiš úkol!","Kéž by Vladan napsal úkol!"],
+ ["Kůň skáče přes překážku.","Skáče kůň přes překážku?","Koni, skákej přes překážku!","Kéž by kůň skákal přes překážku!"],
+ ["Richard hraje fotbal.","Hraje Richard fotbal?","Richarde, hraj fotbal!","Kéž by Richard hrál fotbal!"],
+ ["Na záhoně dozrál meloun.","Dozrál na záhoně meloun?",null,"Kéž by na záhoně dozrál meloun!"],
+ ["Petr je ve svém pokoji.","Je Petr ve svém pokoji?","Petře, jdi do svého pokoje!","Kéž by byl Petr ve svém pokoji!"],
+ ["Po obědě půjdeme na zmrzlinu.","Půjdeme po obědě na zmrzlinu?","Pojďte po obědě na zmrzlinu!","Kéž bychom po obědě šli na zmrzlinu!"],
+ ["Jana si uklidila pokoj.","Uklidila si Jana pokoj?","Jano, ukliď si pokoj!","Kéž by si Jana uklidila pokoj!"],
+ ["Jarek přijde na hokej.","Přijde Jarek na hokej?","Jarku, přijď na hokej!","Kéž by Jarek přišel na hokej!"],
+ ["V úterý bude hezky.","Bude v úterý hezky?",null,"Kéž by bylo v úterý hezky!"],
+ ["Martin si zavázal tkaničku.","Zavázal si Martin tkaničku?","Martine, zavaž si tkaničku!","Kéž by si Martin zavázal tkaničku!"],
+ ["Elvis škrábe gauč.","Škrábe Elvis gauč?","Elvisi, neškrábej gauč!","Kéž by Elvis neškrábal gauč!"],
+ ["Kocour shodil květináč.","Shodil kocour květináč?","Kocoure, neshazuj květináč!","Kéž by kocour neshazoval květináč!"],
+ ["Děti půjdou pouštět draka.","Půjdou děti pouštět draka?","Děti, pojďte pouštět draka!","Kéž by děti šly pouštět draka!"],
+ ["Pštros strká hlavu do písku.","Strká pštros hlavu do písku?","Pštrosi, nestrkej hlavu do písku!","Ať pštros nestrká hlavu do písku!"],
+ ["Lední medvěd plave v bazénu.","Plave lední medvěd v bazénu?","Medvěde, plav v bazénu!","Kéž by lední medvěd plaval v bazénu!"],
+ ["Před jídlem si umyješ ruce.","Umyješ si před jídlem ruce?","Před jídlem si umyj ruce!","Kéž by sis před jídlem umyl ruce!"],
+];
+const VETY1 = [["Dnes je pondělí.",0],["Ráno snídám rohlík s máslem.",0],["V pátek mám hodinu klavíru.",0],["Ztratil jsem kolo.",0],["Zítra pojedu k babičce.",0],["Udržujeme pořádek.",0],
+ ["Máte doma psa?",1],["Co budeš dělat ve středu?",1],["Kdo rozlil ten čaj?",1],["Půjdeš se mnou na nákup?",1],["Budeš se dnes dívat na pohádky?",1],["Umí páv létat?",1],
+ ["Nepředbíhej!",2],["Nešlap po tom trávníku!",2],["Zapiš si domácí úkol!",2],["Nechoď sám do lesa!",2],["Nemluv s plnou pusou!",2],["Použité nádobí odnes!",2],["Nekrmte v zoo zvířata!",2],
+ ["Ať už konečně přestane pršet!",3],["Ať se nikomu nic nestane.",3],["Kéž bychom jeli v neděli na výlet!",3],["Kéž by k obědu byly palačinky!",3]];
+const DRUHV = ["oznamovací","tázací","rozkazovací","přací"];
+const DRUHV_H = ["Oznamovací věta nám něco sděluje. Na konci má tečku.","Tázací věta se ptá. Na konci má otazník.",
+ "Rozkazovací věta rozkazuje, prosí nebo zakazuje. Na konci má většinou vykřičník.","Přací věta vyjadřuje přání – často začíná slovem Kéž nebo Ať."];
+
+/* pořádek slov – první tvar je hlavní, další jsou také správně */
+const PORADI = [
+ ["Naučili jsme se znakovou řeč."],["Klára potřebuje při chůzi bílou hůl.","Klára při chůzi potřebuje bílou hůl."],
+ ["Ota používá k pohybu invalidní vozík.","Ota k pohybu používá invalidní vozík."],["Vítr pořádně rozfoukal listí.","Vítr rozfoukal pořádně listí."],
+ ["V kolik hodin přijdeš domů?"],["Dej mi prosím zmrzlinu."],["Pes běží na zahradu."],["Máma vaří k obědu polévku.","Máma k obědu vaří polévku."],
+ ["Děti si hrají na hřišti."],["Na stromě sedí malá sova."],["Petr dostal k narozeninám lego.","Petr k narozeninám dostal lego."],
+ ["Babička upekla dobrou bábovku."],["Mám ráda své sourozence."],["Zazpíváme si lidovou písničku."],["Kočka spí na měkkém gauči."],
+ ["Ráno svítí na obloze slunce.","Ráno na obloze svítí slunce."],["Jdeme s tátou do lesa."],["Žabka skáče do rybníka."],
+ ["Půjdeš se mnou na nákup?"],["Zítra pojedu k babičce."],["Kluci staví hrad z písku."],["Liška má huňatý ocas."],
+ ["Slon se koupe v jezírku."],["Zebry se pasou na louce."],["Krmení zvířat je zakázáno."],["Ve škole se učíme psát."],
+];
+
+/* povolání: [název, co dělá, pomůcky] */
+const POVOL = [
+ ["policista","Dohlíží na pořádek ve městě.",["pouta","policejní auto"]],["zámečník","Dokáže otevřít nebo spravit zámky.",["klíče","zámek"]],
+ ["kosmonautka","Létá do vesmíru.",["skafandr","raketa"]],["kuchařka","Připravuje obědy nebo večeře.",["vařečka","hrnec","naběračka"]],
+ ["kadeřník","Stříhá a češe vlasy.",["hřeben","fén"]],["automechanik","Opravuje auta.",["hever","klíč na kola"]],
+ ["zahradník","Stará se o zahradu a rostliny.",["hrábě","lopatka","květináč"]],["švadlena","Šije oblečení.",["šicí stroj","jehla a nit"]],
+ ["malíř pokojů","Maluje stěny v bytě.",["váleček","kbelík s barvou","vzorník barev"]],["zubař","Léčí zuby.",["zubní zrcátko","zubní vrtačka"]],
+ ["optik","Vyrábí a prodává brýle.",["brýle","čočky"]],["kurýr","Dováží balíky a zásilky.",["balík","dodávka"]],
+ ["hasič","Hasí požáry.",["hasicí hadice","žebřík"]],["veterinář","Léčí zvířata.",["obojek","psí granule"]],
+ ["pekař","Peče chleba a rohlíky.",["pec","mouka"]],["pilot","Řídí letadlo.",["letadlo"]],["truhlář","Vyrábí nábytek ze dřeva.",["hoblík","prkna"]],
+ ["listonoš","Roznáší dopisy.",["poštovní brašna","dopisy"]],["restaurátor","Opravuje staré obrazy, sochy a nábytek.",[]],
+ ["restauratér","Vede restauraci.",[]],["prodavačka","Prodává zboží v obchodě.",["pokladna","nákupní košík"]],["zedník","Staví zdi z cihel.",["cihly","zednická lžíce"]],
+];
+/* nadřazená slova – verze pro 2. třídu */
+const NADRAZ2 = [
+ ["hudební nástroje",["flétna","buben","housle","harfa","kytara"]],["zvířata",["kůň","žába","myš","opice","kapr"]],["jména",["Eliška","Kamil","Marek","Štěpán","Jana"]],
+ ["nábytek",["stůl","židle","skříň","postel","křeslo"]],["sportovní potřeby",["míč","chrániče","brusle","švihadlo","raketa"]],["dopravní prostředky",["auto","vlak","autobus","kolo","tramvaj"]],
+ ["obuv",["sandály","tenisky","holínky","bačkory"]],["povolání",["prodavačka","pošťačka","mechanik","kuchař","hasič"]],["hračky",["autíčko","vláček","panenka","plyšák","kostky"]],
+ ["ovoce",["jahoda","hruška","citron","jablko","švestka"]],["zelenina",["brokolice","mrkev","petržel","okurka","paprika"]],["pečivo",["veka","rohlík","houska","kobliha","chleba"]],
+ ["oblečení",["tričko","mikina","bunda","kalhoty","svetr"]],["nádobí",["hrnec","talíř","hrnek","pánev"]],["květiny",["růže","tulipán","sedmikráska","pampeliška"]],
+ ["stromy",["smrk","dub","buk","bříza","javor"]],
+];
+
+const cz2 = {
+  druh(){
+    let v,i;
+    if(Math.random()<.6){const r=pick(VETY4);do{i=R(0,3)}while(!r[i]);v=r[i]}else{[v,i]=pick(VETY1)}
+    return {type:"choice",label:"Urči druh věty",text:v,long:true,answer:DRUHV[i],choices:DRUHV,fixedOrder:true,words:true,hint:DRUHV_H[i]};
+  },
+  znam(){
+    let v,i;
+    do{ if(Math.random()<.5){const r=pick(VETY4);i=R(0,2);v=r[i]}else{[v,i]=pick(VETY1)} }while(!v||i>2);
+    const sign=v.slice(-1),body=v.slice(0,-1);
+    return {type:"choice",label:"Doplň znaménko na konec věty",text:`${esc(body)}<span class="gap">&nbsp;</span>`,answer:sign,choices:[".","?","!"],fixedOrder:true,
+      hint:`Je to věta ${DRUHV[i]}. ${DRUHV_H[i]}`};
+  },
+  zmen(){
+    const r=pick(VETY4);let a,b;
+    do{a=R(0,3);b=R(0,3)}while(a===b||!r[a]||!r[b]);
+    const ch=r.filter(x=>x);
+    return {type:"choice",label:`Změň větu tak, aby byla ${DRUHV[b]}. Která je správně?`,text:r[a],long:true,answer:r[b],choices:ch,words:true,hint:DRUHV_H[b]};
+  },
+  poradi(){
+    const acc=pick(PORADI),words=acc[0].split(" ");let sh;
+    do{sh=shuffle(words.map((w,i)=>({w,i})))}while(sh.map(x=>x.w).join(" ")===acc[0]);
+    return {type:"order",label:"Poskládej slova do věty",sentence:acc[0],accepted:acc,pool:sh,built:[],answer:acc[0],
+      hint:"Velké písmeno ukazuje první slovo, znaménko poslední slovo."};
+  },
+  vyznam(){
+    const t=R(0,3);
+    if(t===0&&Math.random()<.5){const pair=shuffle([POVOL.find(x=>x[0]==="restaurátor"),POVOL.find(x=>x[0]==="restauratér")]),[w,d]=pair[0];
+      return {type:"choice",label:"Kdo to je?",text:d,long:true,answer:w,choices:["restaurátor","restauratér"],fixedOrder:true,words:true,
+        hint:"Restaurátor vrací starým věcem jejich původní podobu. Restauratér vede restauraci."}}
+    if(t<=1){const [w,d]=pick(POVOL);const dist=shuffle(POVOL.filter(x=>x[0]!==w&&!/^restaur/.test(x[0])).map(x=>x[0])).slice(0,3);
+      return {type:"choice",label:"Kdo to je?",text:d,long:true,answer:w,choices:[w,...dist],words:true,hint:`${w} – ${d.charAt(0).toLowerCase()+d.slice(1)}`}}
+    if(t===2){const pool=POVOL.filter(x=>x[2].length),[w,,tools]=pick(pool),tool=pick(tools);
+      const dist=shuffle(pool.filter(x=>x[0]!==w).map(x=>x[0])).slice(0,3);
+      return {type:"choice",label:"Kdo tuto pomůcku používá při práci?",text:tool,answer:w,choices:[w,...dist],words:true,hint:`${tool} – to používá ${w}.`}}
+    const [w,d]=pick(POVOL.filter(x=>!/^restaur/.test(x[0])));const dist=shuffle(POVOL.filter(x=>x[0]!==w&&!/^restaur/.test(x[0])).map(x=>x[1])).slice(0,2);
+    return {type:"choice",label:"Co dělá?",text:w,answer:d,choices:[d,...dist],words:true,hint:`${w} – ${d.charAt(0).toLowerCase()+d.slice(1)}`};
+  },
+  nadraz(){
+    const [nad,pod]=pick(NADRAZ2),t=R(0,2),oth=NADRAZ2.filter(x=>x[0]!==nad);
+    if(t===0){const ws=shuffle(pod).slice(0,3);
+      return {type:"choice",label:"Jak nazveš tato slova jedním slovem?",text:ws.join(", "),answer:nad,choices:[nad,...shuffle(oth).slice(0,3).map(x=>x[0])],words:true,
+        hint:`Slovo nadřazené je „${nad}“, slova ${ws.join(", ")} jsou mu podřazená.`}}
+    if(t===1){const ws=shuffle(pod).slice(0,3),o=pick(oth),intr=pick(o[1]);
+      return {type:"choice",label:"Které slovo sem nepatří?",text:"🤔",answer:intr,choices:[...ws,intr],words:true,
+        hint:`${ws.join(", ")} patří mezi ${nad}. „${intr}“ patří mezi ${o[0]}.`}}
+    const w=pick(pod);
+    return {type:"choice",label:`Které slovo patří mezi ${nad.toUpperCase()}?`,text:nad,answer:w,choices:[w,...shuffle(oth).slice(0,3).map(x=>pick(x[1]))],words:true,
+      hint:`„${w}“ patří mezi ${nad}.`};
+  },
+};
+
 const TOPICS = [
   {id:"m-add20",s:"m",g:[2],ico:"➕",t:"Sčítání a odčítání do 20",d:"Rozcvička z hlavy",gen:mathGen.add20},
   {id:"m-100",s:"m",g:[2,3],ico:"💯",t:"Sčítání a odčítání do 100",d:"Přes desítku i bez",gen:mathGen.addsub100},
@@ -769,6 +928,14 @@ const TOPICS = [
   {id:"c-vyj",s:"c",g:[3,4],ico:"📜",t:"Vyjmenovaná slova",d:"Po b, l, m, p, s, v, z",gen:czGen.vyjm},
   {id:"c-dr4",s:"c",g:[3],ico:"🏷️",t:"Slovní druhy – základ",d:"Podst. jm., příd. jm., sloveso, příslovce",gen:czGen.druhy4},
   {id:"c-dr",s:"c",g:[4],ico:"🔟",t:"Všechny slovní druhy",d:"Všech 10 slovních druhů",gen:czGen.druhy},
+  {id:"m2-prech",s:"m",g:[2],ico:"🔟",t:"Přes desítku do 20",d:"Rozklad: 14 − 6 = 14 − 4 − 2",gen:math2.prechod},
+  {id:"m2-tri",s:"m",g:[2],ico:"🥫",t:"Sčítání tří čísel",d:"Počítej výhodně: 3 + 7 + 5",gen:math2.tri},
+  {id:"c2-druh",s:"c",g:[2],ico:"💬",t:"Druhy vět",d:"Oznamovací, tázací, rozkazovací, přací",gen:cz2.druh},
+  {id:"c2-znam",s:"c",g:[2],ico:"❗",t:"Znaménko na konci věty",d:"Tečka, otazník, nebo vykřičník?",gen:cz2.znam},
+  {id:"c2-zmen",s:"c",g:[2],ico:"🔄",t:"Změň druh věty",d:"Gepard běhá. → Běhá gepard?",gen:cz2.zmen},
+  {id:"c2-por",s:"c",g:[2],ico:"🧱",t:"Pořádek slov ve větě",d:"Poskládej větu ze slov",gen:cz2.poradi},
+  {id:"c2-vyzn",s:"c",g:[2],ico:"👷",t:"Slovo a jeho význam",d:"Povolání a pomůcky",gen:cz2.vyznam},
+  {id:"c2-nad",s:"c",g:[2],ico:"🥐",t:"Slova nadřazená a podřazená",d:"pečivo – rohlík, houska",gen:cz2.nadraz},
 
   /* 4. třída – doplněno podle pracovních sešitů */
   {id:"m4-poradi",s:"m",g:[4],ico:"🥇",t:"Pořadí početních operací",d:"Nejdřív · a :, pak + a −",gen:math4.poradi},
@@ -1008,7 +1175,7 @@ function splitHTML(q,res){
   return h;
 }
 function promptHTML(q,state){
-  if(q.type==="split") return "";
+  if(q.type==="split"||q.type==="order") return "";
   if(q.type==="gap"){
     const fill=state?`<span class="gap ${state} pop">${esc(state==="ok"?q.ans:q.ans)}</span>`:`<span class="gap">&nbsp;</span>`;
     return `<div class="qtext">${esc(q.pre)}${fill}${esc(q.post)}</div>`;
@@ -1023,6 +1190,11 @@ function renderQuiz(){
   if(q.type==="split"){
     body=`<div class="split" id="sp">${splitHTML(q)}</div>
       <div class="legend">Ťukni mezi písmena, kde má být mezera. Dalším ťuknutím ji zrušíš.</div>
+      <div class="feedback" id="fb"></div>
+      <div id="dw"><button class="btn" id="done">Hotovo ✓</button></div>`;
+  } else if(q.type==="order"){
+    body=`<div class="ord-line" id="ol"></div><div class="ord-pool" id="op"></div>
+      <div class="legend" id="lg">Ťukej na slova ve správném pořadí. Ťuknutím na slovo v řádku ho vrátíš zpět.</div>
       <div class="feedback" id="fb"></div>
       <div id="dw"><button class="btn" id="done">Hotovo ✓</button></div>`;
   } else if(q.type==="num"){
@@ -1053,6 +1225,8 @@ function renderQuiz(){
       q.sel.has(p)?q.sel.delete(p):q.sel.add(p); b.classList.toggle("on");
     });
     document.getElementById("done").onclick=doneSplit;
+  } else if(q.type==="order"){
+    drawOrder(); document.getElementById("done").onclick=doneOrder;
   } else if(q.type==="num"){
     app.querySelectorAll(".key").forEach(b=>b.onclick=()=>key(b.dataset.k));
   } else {
@@ -1084,10 +1258,25 @@ function doneSplit(){
   document.getElementById("dw").innerHTML="";
   check(ok,given);
 }
+function drawOrder(){
+  const q=S.q,ol=document.getElementById("ol"),op=document.getElementById("op");
+  ol.innerHTML=q.built.map(i=>`<button class="wbtn" data-i="${i}">${esc(q.pool.find(x=>x.i===i).w)}</button>`).join("");
+  op.innerHTML=q.pool.filter(x=>!q.built.includes(x.i)).map(x=>`<button class="wbtn" data-i="${x.i}">${esc(x.w)}</button>`).join("");
+  ol.querySelectorAll(".wbtn").forEach(b=>b.onclick=()=>{if(S.locked)return;q.built=q.built.filter(i=>i!==+b.dataset.i);drawOrder()});
+  op.querySelectorAll(".wbtn").forEach(b=>b.onclick=()=>{if(S.locked)return;q.built.push(+b.dataset.i);drawOrder()});
+}
+function doneOrder(){
+  if(S.locked) return; const q=S.q;
+  if(q.built.length<q.pool.length){const lg=document.getElementById("lg");lg.textContent="Použij všechna slova.";lg.classList.remove("shake");void lg.offsetWidth;lg.classList.add("shake");return}
+  const given=q.built.map(i=>q.pool.find(x=>x.i===i).w).join(" "),ok=q.accepted.includes(given);
+  const ol=document.getElementById("ol");ol.classList.add(ok?"ok":"bad");if(!ok)ol.classList.add("shake");
+  document.getElementById("dw").innerHTML="";
+  check(ok,given);
+}
 function check(ok,given){
   S.locked=true;const q=S.q;
   if(ok) S.score++;
-  const shown = q.type==="split"?q.sentence : q.type==="gap"?q.pre+q.ans+q.post : q.vert? `${q.vert[0]} ${q.vert[1]} = ${fmt(q.answer)}` : (q.type==="num"? stripTags(q.text).replace("?",fmt(q.answer)).replace("▢",fmt(q.answer)) : stripTags(q.text)+" → "+q.answer);
+  const shown = (q.type==="split"||q.type==="order")?q.sentence : q.type==="gap"?q.pre+q.ans+q.post : q.vert? `${q.vert[0]} ${q.vert[1]} = ${fmt(q.answer)}` : (q.type==="num"? stripTags(q.text).replace("?",fmt(q.answer)).replace("▢",fmt(q.answer)) : stripTags(q.text)+" → "+q.answer);
   S.log.push({ok,shown,given});
   if(q.type==="gap"||q.vert) document.getElementById("prompt").innerHTML=promptHTML(q,ok?"ok":"bad");
   if(q.type==="choice"&&q.text.includes('class="gap"')) document.getElementById("prompt").innerHTML=`<div class="qtext">${q.text.replace('<span class="gap">&nbsp;</span>',`<span class="gap ${ok?"ok":"bad"} pop">${esc(q.answer)}</span>`)}</div>`;
@@ -1156,6 +1345,7 @@ document.addEventListener("keydown",e=>{
   if(S.screen!=="quiz") return;
   if(S.locked && e.key==="Enter"){const g=document.getElementById("go");if(g)g.click();return}
   if(S.q.type==="split"&&e.key==="Enter"){doneSplit();return}
+  if(S.q.type==="order"&&e.key==="Enter"){doneOrder();return}
   if(S.q.type==="num"){
     if(/^[0-9]$/.test(e.key)) key(e.key);
     else if(e.key==="Backspace") key("del");
