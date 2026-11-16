@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Procvičování">
+<meta name="theme-color" content="#fff7ec">
+<title>Procvičování 2.–4. třída</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png">
+<style>
+@font-face{font-family:"Nunito";font-style:normal;font-display:swap;font-weight:200 1000;src:url(fonts/nunito-latin-ext-wght-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Nunito";font-style:normal;font-display:swap;font-weight:200 1000;src:url(fonts/nunito-latin-wght-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+:root{
+  --bg:#fff7ec; --card:#ffffff; --ink:#2b2a33; --muted:#7a7686;
+  --math:#3b82f6; --math-soft:#e3eeff; --cz:#e2558a; --cz-soft:#ffe4ee;
+  --ok:#22a06b; --ok-soft:#dcf5e8; --bad:#e5484d; --bad-soft:#ffe3e3;
+  --star:#f5b400; --radius:22px; --shadow:0 4px 0 rgba(0,0,0,.08), 0 8px 24px rgba(0,0,0,.06);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{
+  font-family:"Nunito",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);
+  padding:calc(env(safe-area-inset-top) + 16px) calc(env(safe-area-inset-right) + 16px) calc(env(safe-area-inset-bottom) + 16px) calc(env(safe-area-inset-left) + 16px);
+  -webkit-user-select:none;user-select:none;overscroll-behavior:none;
+}
+button{font-family:inherit;cursor:pointer;border:none;color:inherit}
+.wrap{max-width:980px;margin:0 auto}
+.hidden{display:none!important}
+
+/* header */
+.top{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.top h1{font-size:30px;font-weight:900;margin:0;flex:1}
+.back{background:var(--card);box-shadow:var(--shadow);border-radius:16px;width:54px;height:54px;font-size:26px;font-weight:900}
+.pill{background:var(--card);box-shadow:var(--shadow);border-radius:999px;padding:10px 18px;font-weight:800;font-size:18px}
+
+/* home */
+.hero{font-size:20px;color:var(--muted);margin:-6px 0 22px}
+.subjects{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.subject{border-radius:28px;padding:28px 24px;text-align:left;box-shadow:var(--shadow);min-height:190px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .08s}
+.subject:active,.tile:active,.choice:active,.key:active,.btn:active{transform:translateY(2px) scale(.99)}
+.subject .ico{font-size:58px;line-height:1}
+.subject .nm{font-size:32px;font-weight:900;margin-top:12px}
+.subject .sub{font-size:17px;opacity:.85;font-weight:700}
+.subject.m{background:var(--math);color:#fff}
+.subject.c{background:var(--cz);color:#fff}
+.grades{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 8px}
+.grades .lbl{font-weight:800;color:var(--muted);align-self:center;margin-right:4px}
+.chip{background:var(--card);box-shadow:var(--shadow);border-radius:999px;padding:10px 20px;font-size:18px;font-weight:800}
+.chip.on{background:var(--ink);color:#fff}
+.total{margin-top:22px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 22px;font-size:18px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.total b{font-size:26px;color:var(--star)}
+
+/* topics */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.tile{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 18px 16px;text-align:left;display:flex;gap:14px;align-items:flex-start;transition:transform .08s}
+.tile .ti{font-size:38px;width:58px;height:58px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex:none}
+.m-theme .tile .ti{background:var(--math-soft)} .c-theme .tile .ti{background:var(--cz-soft)}
+.tile .tt{font-size:20px;font-weight:900;line-height:1.2}
+.tile .td{font-size:15px;color:var(--muted);font-weight:700;margin-top:3px}
+.tile .meta{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.badge{font-size:13px;font-weight:800;border-radius:999px;padding:3px 10px;background:#f1eee8;color:var(--muted)}
+.stars{color:var(--star);font-size:18px;letter-spacing:1px}
+.stars .off{color:#ddd6c8}
+
+/* quiz */
+.bar{height:16px;background:#ece5d8;border-radius:999px;overflow:hidden;flex:1}
+.bar i{display:block;height:100%;width:0;border-radius:999px;transition:width .3s}
+.m-theme .bar i{background:var(--math)} .c-theme .bar i{background:var(--cz)}
+.qcard{background:var(--card);border-radius:28px;box-shadow:var(--shadow);padding:26px 22px;text-align:center;margin-top:8px}
+.qlabel{font-size:19px;font-weight:800;color:var(--muted);margin-bottom:12px}
+.qtext{font-size:46px;font-weight:900;line-height:1.25;min-height:70px;word-wrap:break-word}
+.qtext.long{font-size:26px;font-weight:800;text-align:left;line-height:1.4}
+.gap{display:inline-block;min-width:48px;border-bottom:5px solid currentColor;margin:0 2px;padding:0 4px}
+.m-theme .gap{color:var(--math)} .c-theme .gap{color:var(--cz)}
+.gap.ok{color:var(--ok)} .gap.bad{color:var(--bad)}
+.vert{display:inline-grid;font-variant-numeric:tabular-nums;text-align:right;font-size:46px;font-weight:900;line-height:1.15}
+.vert .line{border-top:5px solid var(--ink);margin-top:4px;padding-top:4px}
+.answer{display:inline-block;min-width:130px;padding:6px 18px;border-radius:16px;background:#f6f2ea;margin-top:16px;font-size:44px;font-weight:900;min-height:72px}
+.answer.ok{background:var(--ok-soft);color:var(--ok)} .answer.bad{background:var(--bad-soft);color:var(--bad)}
+.feedback{min-height:34px;margin-top:14px;font-size:22px;font-weight:800}
+.feedback.ok{color:var(--ok)} .feedback.bad{color:var(--bad)}
+.feedback small{display:block;font-size:17px;color:var(--muted);font-weight:700;margin-top:4px}
+
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:440px;margin:18px auto 0}
+.key{background:var(--card);box-shadow:var(--shadow);border-radius:20px;height:74px;font-size:34px;font-weight:900;transition:transform .08s}
+.key.ok{color:#fff} .m-theme .key.ok{background:var(--math)} .c-theme .key.ok{background:var(--cz)}
+.key.del{font-size:28px;color:var(--muted)}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:18px}
+.choice{background:var(--card);box-shadow:var(--shadow);border-radius:20px;min-height:80px;font-size:34px;font-weight:900;padding:8px 12px;transition:transform .08s}
+.choices.words .choice{font-size:21px;min-height:68px}
+.choice.ok{background:var(--ok);color:#fff} .choice.bad{background:var(--bad);color:#fff}
+.btn{display:inline-block;border-radius:20px;padding:18px 34px;font-size:22px;font-weight:900;color:#fff;box-shadow:var(--shadow);margin-top:16px;transition:transform .08s}
+.m-theme .btn{background:var(--math)} .c-theme .btn{background:var(--cz)}
+.btn.ghost{background:var(--card)!important;color:var(--ink)}
+
+/* result */
+.result{text-align:center;padding:30px 20px}
+.result .big{font-size:84px;line-height:1}
+.result h2{font-size:38px;font-weight:900;margin:14px 0 6px}
+.result p{font-size:22px;color:var(--muted);font-weight:700;margin:0 0 6px}
+.result .stars{font-size:56px;margin:12px 0}
+.mistakes{text-align:left;max-width:560px;margin:18px auto 0;background:#fbf8f2;border-radius:18px;padding:14px 18px;font-size:18px;font-weight:700}
+.mistakes div{padding:5px 0;border-bottom:1px dashed #e4dccd}
+.mistakes div:last-child{border:none}
+.mistakes .good{color:var(--ok)}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+.btn{background:var(--math)}
+input{-webkit-user-select:text;user-select:text}
+/* děti */
+.kids{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.kid{background:var(--card);box-shadow:var(--shadow);border-radius:22px;padding:14px 18px;display:flex;gap:14px;align-items:center;text-align:left;border:4px solid transparent}
+.kid.on{border-color:var(--ink)}
+.kid .ki{font-size:44px;line-height:1}
+.kid b{display:block;font-size:22px;font-weight:900}
+.kid small{font-size:16px;color:var(--star);font-weight:800}
+.ecard{margin-bottom:18px;text-align:left}
+.ehead{display:flex;gap:16px;align-items:center;justify-content:center;margin-bottom:8px}
+.bigico{font-size:72px;line-height:1;display:inline-block}
+.glbl{font-size:16px;font-weight:800;color:var(--muted);margin:14px 0 8px}
+.icos{justify-content:flex-start!important}
+.erow{display:flex;flex-direction:column;gap:12px;margin-bottom:26px;align-items:center}
+.icos{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.ic{font-size:32px;width:58px;height:58px;border-radius:16px;background:#f6f2ea;border:3px solid transparent}
+.ic.on{border-color:var(--ink);background:#fff}
+.nm-in{font-family:inherit;font-size:26px;font-weight:800;padding:12px 18px;border-radius:16px;border:3px solid #e4dccd;width:100%;max-width:380px;text-align:center;color:var(--ink)}
+/* rozdělování vět */
+.split{display:flex;flex-wrap:wrap;justify-content:center;align-items:stretch;row-gap:14px;margin:10px 0 4px;font-size:44px;font-weight:900}
+.lt{display:inline-block;padding:6px 0;line-height:1.2}
+.sg{width:26px;margin:0 1px;background:transparent;border-radius:8px;position:relative;padding:0;min-height:60px}
+.sg::after{content:"";position:absolute;left:50%;top:22%;bottom:22%;border-left:3px dotted #d9d1c2;transform:translateX(-50%)}
+.sg.on::after,.sg.good::after,.sg.miss::after,.sg.wrong::after{top:2%;bottom:2%;border-left-width:6px;border-left-style:solid}
+.sg.on::after{border-left-color:var(--cz)}
+.sg.good::after{border-left-color:var(--ok)}
+.sg.miss::after{border-left-color:#f59e0b;border-left-style:dashed}
+.sg.wrong::after{border-left-color:var(--bad)}
+.sg.wrong{background:var(--bad-soft)}
+.legend{font-size:16px;color:var(--muted);font-weight:700;margin-top:8px}
+@keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+.pop{animation:pop .35s ease-out}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .25s 2}
+
+@media (max-width:640px){
+  .subjects{grid-template-columns:1fr}
+  .qtext{font-size:38px} .qtext.long{font-size:22px} .vert{font-size:38px}
+  .key{height:64px}
+  .kids{grid-template-columns:1fr}
+  .split{font-size:32px} .sg{width:20px}
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+/* ============ pomocné funkce ============ */
+const R = (a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick = arr=>arr[Math.floor(Math.random()*arr.length)];
+const shuffle = arr=>{const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const fmt = n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g," ");
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let store={};
+try{store=JSON.parse(localStorage.getItem("procvic_v1")||"{}")}catch(e){store={}}
+function save(){try{localStorage.setItem("procvic_v1",JSON.stringify(store))}catch(e){}}
+const ICON_GROUPS={
+  "Zvířata":["🦊","🐻","🐱","🐶","🐼","🐨","🐯","🦁","🐰","🐹","🐭","🐸","🐵","🐷","🐮","🐴","🦄","🦓","🦒","🐘","🦔","🦉","🐧","🦜","🐢","🐬","🐳","🦈","🐙","🦋","🐞","🐝"],
+  "Postavičky":["🧚","🧜‍♀️","🧜‍♂️","🧙","🧝","🦸","🦹","🥷","👸","🤴","🧑‍🚀","🕵️","🧑‍🚒","🧑‍🍳","🧑‍🎨","🤖","👽","👻","🤡","🧛","🧞","🎅"],
+  "Dinosauři a draci":["🦖","🦕","🐉","🐲"],
+  "Ostatní":["⚽","🏀","🎸","🎨","🚀","🚂","🚜","🏎️","⭐","🌈","🌻","🍓","🍕","🎈","👑","💎"]};
+const ICOS=Object.values(ICON_GROUPS).flat();
+if(!Array.isArray(store.kids)) store.kids=[{name:"Dítě 1",ico:"🦊",grade:0,best:{}},{name:"Dítě 2",ico:"🐻",grade:0,best:{}}];
+if(store.cur==null||!store.kids[store.cur]) store.cur=0;
+const kid=()=>store.kids[store.cur];
+
+/* gap word parser: "b[y]dlet" -> {pre,ans,post} */
+function gapWord(w){const m=w.match(/^(.*?)\[(.+?)\](.*)$/);return {pre:m[1],ans:m[2],post:m[3],full:m[1]+m[2]+m[3]}}
+
+/* ============ MATEMATIKA ============ */
+function numQ(text,answer,extra={}){return Object.assign({type:"num",text,answer},extra)}
+
+const mathGen = {
+  add20(){ if(Math.random()<.5){const a=R(2,18),b=R(1,20-a);return numQ(`${a} + ${b} = ?`,a+b)} const a=R(5,20),b=R(1,a);return numQ(`${a} − ${b} = ?`,a-b)},
+  addsub100(){
+    const t=R(0,3);
+    if(t===0){const a=R(10,89),b=R(2,100-a);return numQ(`${a} + ${b} = ?`,a+b)}
+    if(t===1){const a=R(20,100),b=R(2,a-1);return numQ(`${a} − ${b} = ?`,a-b)}
+    if(t===2){const a=R(1,9)*10,b=R(1,9);return numQ(`${a} + ${b} = ?`,a+b)}
+    const a=R(3,9)*10,b=R(1,a/10-1)*10;return numQ(`${a} − ${b} = ?`,a-b)},
+  missing(){
+    if(Math.random()<.5){const a=R(5,60),x=R(2,39);return numQ(`${a} + ▢ = ${a+x}`,x,{label:"Které číslo chybí?"})}
+    const a=R(20,99),x=R(2,a-5);return numQ(`${a} − ▢ = ${a-x}`,x,{label:"Které číslo chybí?"})},
+  nas25(){const a=R(2,5),b=R(0,10);return Math.random()<.5?numQ(`${a} · ${b} = ?`,a*b):numQ(`${b} · ${a} = ?`,a*b)},
+  nas110(){const a=R(2,10),b=R(1,10);return numQ(`${a} · ${b} = ?`,a*b)},
+  del(){const a=R(2,10),q=R(1,10);return numQ(`${a*q} : ${a} = ?`,q)},
+  mixnasdel(){return Math.random()<.5?mathGen.nas110():mathGen.del()},
+  cmp(max){
+    let a=R(0,max),b=Math.random()<.2?a:R(Math.max(0,a-(max>100?120:15)),Math.min(max,a+(max>100?120:15)));
+    if(Math.random()<.25&&max>=100){const x=R(1,9),y=R(1,9);a=x*10+y;b=y*10+x}
+    const ans=a<b?"<":a>b?">":"=";
+    return {type:"choice",label:"Doplň znaménko",text:`${fmt(a)} <span class="gap">&nbsp;</span> ${fmt(b)}`,answer:ans,choices:["<","=",">"],fixedOrder:true}},
+  addsub1000(){
+    const t=R(0,2);
+    if(t===0){const a=R(100,850),b=R(11,999-a);return numQ(`${a} + ${b} = ?`,a+b)}
+    if(t===1){const a=R(200,999),b=R(11,a-50);return numQ(`${a} − ${b} = ?`,a-b)}
+    const a=R(1,8)*100,b=R(1,9)*10;return numQ(`${a} + ${b} = ?`,a+b)},
+  pisemne(){
+    if(Math.random()<.5){const a=R(1000,7999),b=R(100,9999-a);return numQ("",a+b,{label:"Sečti písemně",vert:[fmt(a),"+ "+fmt(b)]})}
+    const a=R(2000,9999),b=R(150,a-500);return numQ("",a-b,{label:"Odečti písemně",vert:[fmt(a),"− "+fmt(b)]})},
+  nasJedno(){const a=R(12,999),b=R(2,9);return numQ(`${a} · ${b} = ?`,a*b)},
+  zbytek(){
+    const b=R(2,9),q=R(2,9),r=R(1,b-1),a=b*q+r;
+    if(Math.random()<.5) return numQ(`${a} : ${b} = ${q}, zbytek ?`,r,{label:"Jaký je zbytek?"});
+    return numQ(`${a} : ${b} = ?  (zb. ${r})`,q,{label:"Dělení se zbytkem"})},
+  zaokr(){
+    if(Math.random()<.5){const n=R(11,999);return numQ(`${fmt(n)} ≈ ?`,Math.round(n/10)*10,{label:"Zaokrouhli na desítky"})}
+    const n=R(101,9999);return numQ(`${fmt(n)} ≈ ?`,Math.round(n/100)*100,{label:"Zaokrouhli na stovky"})},
+  jednotky(){
+    const u=pick([["m","cm",100,1,9],["dm","cm",10,1,20],["cm","mm",10,1,30],["km","m",1000,1,9],["kg","g",1000,1,9],["h","min",60,1,5],["min","s",60,1,5],["l","dl",10,1,9],["m","dm",10,1,20]]);
+    const n=R(u[3],u[4]);return numQ(`${n} ${u[0]} = ? ${u[1]}`,n*u[2],{label:"Převeď jednotky"})},
+  slovni(){
+    const t=R(0,6);let a,b,q;
+    switch(t){
+      case 0: a=R(5,40);b=R(5,40);return numQ(`Maminka koupila ${a} jablek a ${b} hrušek. Kolik kusů ovoce koupila celkem?`,a+b,{long:true});
+      case 1: a=R(20,30);b=R(5,a-5);return numQ(`Ve třídě je ${a} dětí. ${b} dětí odešlo na oběd. Kolik dětí zůstalo ve třídě?`,a-b,{long:true});
+      case 2: a=R(5,10);return numQ(`Jedno auto má 4 kola. Kolik kol má dohromady ${a} aut?`,4*a,{long:true});
+      case 3: a=R(5,10)*10;b=R(5,a-5);return numQ(`Petr má ${a} Kč. Lízátko stojí ${b} Kč. Kolik korun mu zbude, když si lízátko koupí?`,a-b,{long:true});
+      case 4: b=R(5,9);q=R(5,10);return numQ(`${b*q} bonbonů rozdělíme spravedlivě mezi ${b} dětí. Kolik bonbonů dostane každé dítě?`,q,{long:true});
+      case 5: a=R(5,40);b=R(5,30);return numQ(`Na stromě sedělo ${a} vrabců. Přiletělo dalších ${b}. Kolik vrabců je teď na stromě?`,a+b,{long:true});
+      default: a=R(5,9);b=R(5,10);return numQ(`V jedné krabici je ${a} pastelek. Kolik pastelek je v ${b} krabicích?`,a*b,{long:true});
+    }},
+};
+
+/* ============ ČEŠTINA ============ */
+const VYJM_Y = ["b[y]dlet","ob[y]vatel","b[ý]k","kob[y]la","b[y]lina","náb[y]tek","dob[y]tek","b[y]strý","příb[y]tek",
+ "sl[y]šet","ml[ý]n","bl[ý]skat se","pol[y]kat","pl[y]nout","pl[ý]tvat","vzl[y]kat","l[y]sý","l[ý]ko","l[ý]tko","l[y]že","pel[y]něk","pl[y]š",
+ "m[y]š","hm[y]z","hlem[ý]žď","zam[y]kat","chm[ý]ří","m[ý]dlo","m[y]slet",
+ "p[ý]cha","p[y]tel","p[y]sk","netop[ý]r","slep[ý]š","p[y]l","kop[y]to","klop[ý]tat","třp[y]tit se",
+ "s[y]n","s[ý]r","s[y]rový","s[ý]kora","s[ý]ček","s[y]sel","s[y]čet","s[y]pat","s[y]tý",
+ "v[y]soký","v[ý]skat","zv[y]kat","žv[ý]kat","v[y]dra","v[ý]r","v[y]žle","pov[y]k",
+ "jaz[y]k","brz[y]"];
+const VYJM_I = ["b[i]tva","b[í]lý","l[í]pa","l[i]st","l[i]ška","l[i]nka","m[i]lý","m[í]sa","m[i]nuta","m[í]č","p[i]la","p[í]sek","p[í]seň","p[i]rát",
+ "s[í]la","s[i]lnice","s[í]to","v[i]dlička","v[í]tr","v[i]dět","z[i]ma","z[í]tra","l[í]t"];
+const TVRDE = ["ch[y]tat","k[y]tara","r[y]ba","d[ý]ně","t[y]gr","kr[y]sa","r[ý]č","ch[y]ba","t[ý]den","hr[y]","kr[y]t","h[ý]bat","d[y]m","n[y]ní","k[y]selý","ch[ý]še","r[y]chle","t[y]č"];
+const MEKKE = ["ž[i]rafa","š[i]ška","č[i]stý","ř[í]zek","c[i]bule","j[í]dlo","ž[i]dle","š[í]p","č[í]st","ř[i]dič","c[i]zí","ž[i]vot","š[i]roký","č[i]slo","c[i]ť","j[i]skra"];
+const EJE = ["ob[ě]d","ob[je]v","v[ě]tev","p[ě]t","m[ě]sto","b[ě]hat","v[je]zd","ob[je]kt","v[ě]ž","zm[ě]na","dv[ě]","ob[je]dnat","v[ě]ta","ob[je]m","p[ě]na","ob[je]tí","b[ě]žet","v[ě]da","ob[ě]hnout","m[ě]síc","p[ě]kný","v[je]t"];
+const PAROVE = [["hra[d]","t","hrady"],["zu[b]","p","zuby"],["chlé[b]","p","chleby"],["mrá[z]","s","mrazy"],["ha[d]","t","hadi"],["skle[p]","b","sklepy"],["stro[p]","b","stropy"],
+ ["kabá[t]","d","kabáty"],["plo[t]","d","ploty"],["mrke[v]","f","mrkve"],["le[v]","f","lvi"],["obcho[d]","t","obchody"],["svě[t]","d","světy"],["kří[ž]","š","kříže"],
+ ["my[š]","ž","myši"],["nů[ž]","š","nože"],["ko[š]","ž","koše"],["le[s]","z","lesy"],["pe[s]","z","psi"],["vů[z]","s","vozy"],["hři[b]","p","hřiby"],["slou[p]","b","sloupy"],
+ ["sní[h]","ch","sněhy"],["bře[h]","ch","břehy"],["stra[ch]","h","strachy"],["oble[k]","g","obleky"],["holu[b]","p","holubi"],["obra[z]","s","obrazy"],["dě[d]a","t","dědeček"],["ru[k]avice","g","ruka"],["su[d]","t","sudy"],["pla[v]ky","f","plavat"]];
+const DRUHY = ["podstatné jméno","přídavné jméno","zájmeno","číslovka","sloveso","příslovce","předložka","spojka","částice","citoslovce"];
+const SLOVA = [["pes",1],["škola",1],["maminka",1],["stůl",1],["jablko",1],["les",1],["kamarád",1],
+ ["zelený",2],["veliký",2],["rychlý",2],["krásná",2],["malé",2],["otcův",2],
+ ["já",3],["on",3],["my",3],["ona",3],["tvůj",3],["ten",3],
+ ["tři",4],["pět",4],["první",4],["sto",4],["dvakrát",4],
+ ["běžet",5],["čte",5],["psát",5],["zpívá",5],["skáčou",5],["spí",5],
+ ["rychle",6],["dnes",6],["venku",6],["včera",6],["nahoře",6],["hezky",6],
+ ["na",7],["pod",7],["v",7],["před",7],["za",7],["do",7],
+ ["a",8],["ale",8],["nebo",8],["protože",8],["když",8],
+ ["ať",9],["kéž",9],["ano",9],["ne",9],["prý",9],
+ ["haf",10],["au",10],["bum",10],["mňau",10],["hurá",10]];
+const ABC = ["auto","balón","cesta","čáp","dům","fazole","hora","chata","iglú","jablko","kočka","lev","míč","noha","ovce","pes","řeka","ryba","sova","šála","tráva","ucho","vlak","zebra","žába","dárek","hrad","chléb","citron","čepice","slon","šnek","rak","řepa","zámek","žirafa","koláč","kuře","lampa","louka"];
+const SENTENCES = ["Máma vaří oběd.","Pes běží na zahradu.","Děti si hrají na hřišti.","Babička peče koláče.","V lese roste houba.","Kočka spí na gauči.",
+ "Táta jede do práce.","Ve škole se učíme číst.","Na stromě sedí sova.","Petr má nové kolo.","Jana jde s mámou do obchodu.","Ptáci letí na jih.",
+ "Venku sněží a fouká vítr.","Pejsek si hraje s míčem.","Dědeček čte noviny.","Na louce kvetou květiny.","Ráno svítí slunce.","Vláček jede přes most.",
+ "Žabka skáče do rybníka.","Z komína stoupá kouř.","Ema kreslí obrázek.","K obědu byla polévka.","Na poli pracuje traktor.","V zimě stavíme sněhuláka.",
+ "Ryba plave v řece.","Ondra hraje fotbal.","Teta přinesla dort.","Kluci staví hrad z písku.","Liška má huňatý ocas.","Večer jdeme brzy spát.",
+ "Ve třídě je dvacet dětí.","Myška se schovala pod stůl.","U babičky je to krásné.","Jablka visí na stromě.","Honza si čte o dinosaurech."];
+const coll = (()=>{try{return new Intl.Collator("cs")}catch(e){return {compare:(a,b)=>a.localeCompare(b)}}})();
+
+function gapQ(word,choices,label,explain){const g=gapWord(word);return {type:"gap",label,pre:g.pre,ans:g.ans,post:g.post,answer:g.ans,choices,explain}}
+const IY = ["i","í","y","ý"];
+
+const czGen = {
+  vyjm(){
+    const useY=Math.random()<.65, w=useY?pick(VYJM_Y):pick(VYJM_I), g=gapWord(w);
+    return gapQ(w,IY,"Doplň i / í nebo y / ý",useY?`Slovo „${g.full}“ patří mezi vyjmenovaná slova (nebo slova příbuzná).`:`„${g.full}“ není vyjmenované ani příbuzné slovo, proto i/í.`)},
+  mekke(){
+    const tv=Math.random()<.5, w=tv?pick(TVRDE):pick(MEKKE), g=gapWord(w);
+    return gapQ(w,IY,"Tvrdé a měkké souhlásky",tv?`Po tvrdé souhlásce (h, ch, k, r, d, t, n) píšeme y/ý.`:`Po měkké souhlásce (ž, š, č, ř, c, j, ď, ť, ň) píšeme i/í.`)},
+  eje(){
+    const w=pick(EJE), g=gapWord(w);
+    return gapQ(w,["ě","je"],"Doplň ě nebo je",g.ans==="je"?`Předpona ob- / v- + slovo začínající na „je“ → píšeme je.`:`Tady píšeme ě.`)},
+  parove(){
+    const [w,alt,hint]=pick(PAROVE), g=gapWord(w);
+    return gapQ(w,shuffle([g.ans,alt]),"Párové souhlásky",`Ověř si to: ${hint}.`)},
+  druhy(){
+    const [w,d]=pick(SLOVA);
+    return {type:"choice",label:"Který je to slovní druh?",text:w,answer:DRUHY[d-1],choices:DRUHY.map((x,i)=>`${x}`),fixedOrder:true,words:true,explain:`„${w}“ je ${d}. ${DRUHY[d-1]}.`}},
+  druhy4(){
+    const pool=SLOVA.filter(s=>[1,2,5,6].includes(s[1]));const [w,d]=pick(pool);
+    return {type:"choice",label:"Který je to slovní druh?",text:w,answer:DRUHY[d-1],choices:[DRUHY[0],DRUHY[1],DRUHY[4],DRUHY[5]],fixedOrder:true,words:true,explain:`„${w}“ je ${DRUHY[d-1]}.`}},
+  abc(){
+    let ws;do{ws=shuffle(ABC).slice(0,4)}while(new Set(ws.map(w=>w[0])).size<3);
+    const first=ws.slice().sort(coll.compare)[0];
+    return {type:"choice",label:"Které slovo je v abecedě první?",text:"🔤",answer:first,choices:ws,words:true,explain:`Pořadí: ${ws.slice().sort(coll.compare).join(", ")}. Pozor: „ch“ je až za „h“.`}},
+  split(){
+    const s=pick(SENTENCES),letters=[],cuts=new Set();
+    for(const ch of s){ if(ch===" ") cuts.add(letters.length-1); else letters.push(ch) }
+    const prep=s.split(" ").some(w=>/^[vkszuVKSZU]$/.test(w));
+    return {type:"split",label:"Rozděl větu na slova – ťukni mezi písmena",sentence:s,letters,cuts,sel:new Set(),answer:s,
+      explain:prep?"Pozor: předložky (v, k, s, z, u…) píšeme zvlášť.":null}},
+  slabiky(){
+    const list=[["pes",1],["dům",1],["les",1],["máma",2],["škola",2],["auto",2],["kočka",2],["pero",2],["okno",2],["babička",3],["kolotoč",3],["pastelka",3],["telefon",3],["papoušek",3],["televize",4],["motorika",4],["kamarádi",4],["čokoláda",4],["krokodýl",3],["vlak",1]];
+    const [w,n]=pick(list);
+    return {type:"choice",label:"Kolik slabik má slovo?",text:w,answer:String(n),choices:["1","2","3","4"],fixedOrder:true}},
+};
+
+/* ============ přehled témat ============ */
+const TOPICS = [
+  {id:"m-add20",s:"m",g:[2],ico:"➕",t:"Sčítání a odčítání do 20",d:"Rozcvička z hlavy",gen:mathGen.add20},
+  {id:"m-100",s:"m",g:[2,3],ico:"💯",t:"Sčítání a odčítání do 100",d:"Přes desítku i bez",gen:mathGen.addsub100},
+  {id:"m-miss",s:"m",g:[2,3],ico:"❓",t:"Které číslo chybí?",d:"Doplň do rovnice",gen:mathGen.missing},
+  {id:"m-cmp100",s:"m",g:[2],ico:"⚖️",t:"Porovnávání do 100",d:"Větší, menší, rovno",gen:()=>mathGen.cmp(100)},
+  {id:"m-nas25",s:"m",g:[2],ico:"✖️",t:"Násobilka 2–5",d:"Malá násobilka – začátek",gen:mathGen.nas25},
+  {id:"m-nas",s:"m",g:[3],ico:"🧮",t:"Celá malá násobilka",d:"Násobky 1–10",gen:mathGen.nas110},
+  {id:"m-del",s:"m",g:[3],ico:"➗",t:"Dělení v oboru násobilky",d:"Bez zbytku",gen:mathGen.del},
+  {id:"m-mix",s:"m",g:[3,4],ico:"🔀",t:"Násobení a dělení – mix",d:"Na rychlost",gen:mathGen.mixnasdel},
+  {id:"m-1000",s:"m",g:[3],ico:"🔢",t:"Sčítání a odčítání do 1 000",d:"Trojmístná čísla",gen:mathGen.addsub1000},
+  {id:"m-cmp1000",s:"m",g:[3,4],ico:"⚖️",t:"Porovnávání do 10 000",d:"Větší, menší, rovno",gen:()=>mathGen.cmp(9999)},
+  {id:"m-slovni",s:"m",g:[2,3],ico:"📖",t:"Slovní úlohy",d:"Přečti a spočítej",gen:mathGen.slovni},
+  {id:"m-pis",s:"m",g:[4],ico:"📝",t:"Písemné sčítání a odčítání",d:"Čísla do 10 000",gen:mathGen.pisemne},
+  {id:"m-nasj",s:"m",g:[4],ico:"✖️",t:"Násobení jednociferným číslem",d:"Např. 234 · 3",gen:mathGen.nasJedno},
+  {id:"m-zb",s:"m",g:[3,4],ico:"🍰",t:"Dělení se zbytkem",d:"Kolik zbude?",gen:mathGen.zbytek},
+  {id:"m-zaokr",s:"m",g:[3,4],ico:"🎯",t:"Zaokrouhlování",d:"Na desítky a stovky",gen:mathGen.zaokr},
+  {id:"m-jedn",s:"m",g:[3,4],ico:"📏",t:"Převody jednotek",d:"Délka, hmotnost, čas, objem",gen:mathGen.jednotky},
+
+  {id:"c-abc",s:"c",g:[2],ico:"🔤",t:"Abeceda",d:"Které slovo je první?",gen:czGen.abc},
+  {id:"c-split",s:"c",g:[2,3],ico:"✂️",t:"Rozděl větu na slova",d:"Kde jsou mezery?",gen:czGen.split},
+  {id:"c-slab",s:"c",g:[2],ico:"👏",t:"Slabiky",d:"Kolik slabik má slovo?",gen:czGen.slabiky},
+  {id:"c-mek",s:"c",g:[2,3],ico:"🧸",t:"Tvrdé a měkké souhlásky",d:"i/í nebo y/ý",gen:czGen.mekke},
+  {id:"c-eje",s:"c",g:[2,3],ico:"🌳",t:"Psaní ě / je",d:"oběd × objev",gen:czGen.eje},
+  {id:"c-par",s:"c",g:[2,3],ico:"👂",t:"Párové souhlásky",d:"hrad nebo hrat?",gen:czGen.parove},
+  {id:"c-vyj",s:"c",g:[3,4],ico:"📜",t:"Vyjmenovaná slova",d:"Po b, l, m, p, s, v, z",gen:czGen.vyjm},
+  {id:"c-dr4",s:"c",g:[3],ico:"🏷️",t:"Slovní druhy – základ",d:"Podst. jm., příd. jm., sloveso, příslovce",gen:czGen.druhy4},
+  {id:"c-dr",s:"c",g:[4],ico:"🔟",t:"Všechny slovní druhy",d:"Všech 10 slovních druhů",gen:czGen.druhy},
+];
+const QN = 10;
+
+/* ============ stav a vykreslení ============ */
+const app=document.getElementById("app");
+let S={screen:"home",subject:null,topic:null,q:null,i:0,score:0,input:"",locked:false,log:[]};
+
+function starsHTML(n){return `<span class="stars">${[1,2,3].map(i=>i<=n?"★":`<span class="off">★</span>`).join("")}</span>`}
+function starsFor(score){return score>=QN?3:score>=8?2:score>=5?1:0}
+function totalStars(k=kid()){return Object.values(k.best).reduce((a,b)=>a+starsFor(b),0)}
+
+function render(){
+  document.body.className = S.subject? (S.subject==="m"?"m-theme":"c-theme") : "";
+  if(S.screen==="home") return renderHome();
+  if(S.screen==="topics") return renderTopics();
+  if(S.screen==="quiz") return renderQuiz();
+  if(S.screen==="result") return renderResult();
+}
+
+function renderHome(){
+  S.subject=null;document.body.className="";
+  const k=kid(),gr=k.grade;
+  app.innerHTML=`
+    <div class="top"><h1>Ahoj, ${esc(k.name)}! ${k.ico}</h1><button class="pill" id="edit">✏️ Jména a ikony</button></div>
+    <div class="kids">${store.kids.map((x,i)=>`<button class="kid ${i===store.cur?"on":""}" data-k="${i}"><span class="ki">${x.ico}</span><span><b>${esc(x.name)}</b><small>★ ${totalStars(x)}</small></span></button>`).join("")}</div>
+    <div class="hero">Vyber předmět. Každé cvičení má ${QN} příkladů – za správné odpovědi sbíráš hvězdičky.</div>
+    <div class="subjects">
+      <button class="subject m" data-s="m"><div class="ico">🔢</div><div><div class="nm">Matematika</div><div class="sub">${TOPICS.filter(t=>t.s==="m"&&(!gr||t.g.includes(gr))).length} cvičení</div></div></button>
+      <button class="subject c" data-s="c"><div class="ico">📚</div><div><div class="nm">Čeština</div><div class="sub">${TOPICS.filter(t=>t.s==="c"&&(!gr||t.g.includes(gr))).length} cvičení</div></div></button>
+    </div>
+    <div class="grades"><span class="lbl">${esc(k.name)} chodí do:</span>
+      ${[0,2,3,4].map(g=>`<button class="chip ${gr===g?"on":""}" data-g="${g}">${g?g+". třídy":"Všechny"}</button>`).join("")}
+    </div>
+    <div class="total"><span>Hvězdičky – ${esc(k.name)}</span><b>★ ${totalStars()} / ${TOPICS.length*3}</b></div>`;
+  app.querySelectorAll(".kid").forEach(b=>b.onclick=()=>{store.cur=+b.dataset.k;save();renderHome()});
+  app.querySelectorAll(".subject").forEach(b=>b.onclick=()=>{S.subject=b.dataset.s;S.screen="topics";render()});
+  app.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{kid().grade=+b.dataset.g;save();renderHome()});
+  document.getElementById("edit").onclick=renderEdit;
+}
+
+function renderEdit(){
+  const tmp=store.kids.map(x=>x.ico);
+  app.innerHTML=`
+    <div class="top"><button class="back" id="bk">‹</button><h1>Jména a ikony</h1></div>
+    <form id="f">
+      ${store.kids.map((x,i)=>`<div class="qcard ecard">
+        <div class="ehead"><span class="bigico" id="bi${i}">${x.ico}</span>
+          <input class="nm-in" id="n${i}" value="${esc(x.name)}" maxlength="16" autocomplete="off" placeholder="Jméno"></div>
+        ${Object.entries(ICON_GROUPS).map(([g,list])=>`<div class="glbl">${g}</div>
+          <div class="icos">${list.map(ic=>`<button type="button" class="ic ${ic===x.ico?"on":""}" data-i="${i}" data-ic="${ic}">${ic}</button>`).join("")}</div>`).join("")}
+      </div>`).join("")}
+      <div style="text-align:center"><button class="btn" type="submit">Uložit ✓</button></div>
+    </form>`;
+  document.getElementById("bk").onclick=renderHome;
+  app.querySelectorAll(".ic").forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.i;tmp[i]=b.dataset.ic;
+    app.querySelectorAll(`.ic[data-i="${i}"]`).forEach(x=>x.classList.toggle("on",x===b));
+    const bi=document.getElementById("bi"+i);bi.textContent=tmp[i];bi.classList.remove("pop");void bi.offsetWidth;bi.classList.add("pop");
+  });
+  document.getElementById("f").onsubmit=e=>{
+    e.preventDefault();
+    store.kids.forEach((x,i)=>{const v=document.getElementById("n"+i).value.trim();if(v)x.name=v;x.ico=tmp[i]});
+    save();renderHome();
+  };
+}
+
+function renderTopics(){
+  const list=TOPICS.filter(t=>t.s===S.subject&&(!kid().grade||t.g.includes(kid().grade)));
+  app.innerHTML=`
+    <div class="top"><button class="back" id="bk">‹</button><h1>${S.subject==="m"?"🔢 Matematika":"📚 Čeština"}</h1>
+      <span class="pill">${kid().ico} ${esc(kid().name)}</span></div>
+    <div class="tiles">${list.map(t=>`
+      <button class="tile" data-id="${t.id}"><div class="ti">${t.ico}</div><div>
+        <div class="tt">${t.t}</div><div class="td">${t.d}</div>
+        <div class="meta"><span class="badge">${t.g.join(".–")}. tř.</span>${starsHTML(starsFor(kid().best[t.id]||0))}</div>
+      </div></button>`).join("")}</div>`;
+  document.getElementById("bk").onclick=()=>{S.screen="home";render()};
+  app.querySelectorAll(".tile").forEach(b=>b.onclick=()=>startQuiz(b.dataset.id));
+}
+
+function startQuiz(id){
+  S.topic=TOPICS.find(t=>t.id===id);S.i=0;S.score=0;S.log=[];S.screen="quiz";S.seen=new Set();nextQ();
+}
+function nextQ(){
+  let q,k=0;
+  do{q=S.topic.gen();k++}while(S.seen.has(qKey(q))&&k<30);
+  S.seen.add(qKey(q));
+  if(q.choices&&!q.fixedOrder) q.choices=shuffle(q.choices);
+  S.q=q;S.input="";S.locked=false;S.first=true;render();
+}
+function qKey(q){return (q.sentence||"")+(q.text||"")+(q.pre||"")+(q.post||"")+(q.vert||"")}
+
+function splitHTML(q,res){
+  let h="";
+  q.letters.forEach((ch,i)=>{
+    h+=`<span class="lt">${esc(ch)}</span>`;
+    if(i<q.letters.length-1){
+      const on=q.sel.has(i),tr=q.cuts.has(i);
+      const cls=res?(on&&tr?" good":tr?" miss":on?" wrong":""):(on?" on":"");
+      h+=`<button class="sg${cls}" data-p="${i}" aria-label="mezera"></button>`;
+    }
+  });
+  return h;
+}
+function promptHTML(q,state){
+  if(q.type==="split") return "";
+  if(q.type==="gap"){
+    const fill=state?`<span class="gap ${state} pop">${esc(state==="ok"?q.ans:q.ans)}</span>`:`<span class="gap">&nbsp;</span>`;
+    return `<div class="qtext">${esc(q.pre)}${fill}${esc(q.post)}</div>`;
+  }
+  if(q.vert) return `<div class="qtext"><div class="vert"><div>${q.vert[0]}</div><div>${q.vert[1]}</div><div class="line">${state?`<span class="pop" style="color:var(--${state==="ok"?"ok":"bad"})">${fmt(q.answer)}</span>`:"?"}</div></div></div>`;
+  return `<div class="qtext ${q.long?"long":""}">${q.text}</div>`;
+}
+
+function renderQuiz(){
+  const q=S.q,t=S.topic;
+  let body="";
+  if(q.type==="split"){
+    body=`<div class="split" id="sp">${splitHTML(q)}</div>
+      <div class="legend">Ťukni mezi písmena, kde má být mezera. Dalším ťuknutím ji zrušíš.</div>
+      <div class="feedback" id="fb"></div>
+      <div id="dw"><button class="btn" id="done">Hotovo ✓</button></div>`;
+  } else if(q.type==="num"){
+    body=`<div class="answer" id="ans">${S.input||"&nbsp;"}</div>
+      <div class="feedback" id="fb"></div>
+      <div class="keypad" id="kp">
+        ${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="key" data-k="${n}">${n}</button>`).join("")}
+        <button class="key del" data-k="del">⌫</button><button class="key" data-k="0">0</button><button class="key ok" data-k="ok">OK</button>
+      </div>`;
+  } else {
+    body=`<div class="feedback" id="fb"></div>
+      <div class="choices ${q.words?"words":""}" id="ch">${q.choices.map(c=>`<button class="choice" data-c="${esc(c)}">${esc(c)}</button>`).join("")}</div>`;
+  }
+  app.innerHTML=`
+    <div class="top"><button class="back" id="bk">✕</button>
+      <div class="bar"><i style="width:${S.i/QN*100}%"></i></div>
+      <span class="pill">${S.i+1} / ${QN}</span><span class="pill">⭐ ${S.score}</span></div>
+    <div class="qcard">
+      <div class="qlabel">${t.ico} ${q.label||t.t}</div>
+      <div id="prompt">${promptHTML(q)}</div>
+      ${body}
+      <div id="cont"></div>
+    </div>`;
+  document.getElementById("bk").onclick=()=>{S.screen="topics";render()};
+  if(q.type==="split"){
+    app.querySelectorAll(".sg").forEach(b=>b.onclick=()=>{
+      if(S.locked) return; const p=+b.dataset.p;
+      q.sel.has(p)?q.sel.delete(p):q.sel.add(p); b.classList.toggle("on");
+    });
+    document.getElementById("done").onclick=doneSplit;
+  } else if(q.type==="num"){
+    app.querySelectorAll(".key").forEach(b=>b.onclick=()=>key(b.dataset.k));
+  } else {
+    app.querySelectorAll(".choice").forEach(b=>b.onclick=()=>choose(b));
+  }
+}
+
+function key(k){
+  if(S.locked) return;
+  const el=document.getElementById("ans");
+  if(k==="del"){S.input=S.input.slice(0,-1)}
+  else if(k==="ok"){ if(S.input!=="") check(parseInt(S.input,10)===S.q.answer, S.input); return }
+  else if(S.input.length<6){S.input=(S.input==="0"?"":S.input)+k}
+  el.innerHTML=S.input?fmt(S.input):"&nbsp;";
+}
+function choose(btn){
+  if(S.locked) return;
+  const c=btn.dataset.c, ok=c===S.q.answer;
+  app.querySelectorAll(".choice").forEach(b=>{if(b.dataset.c===S.q.answer) b.classList.add("ok")});
+  if(!ok) btn.classList.add("bad");
+  check(ok,c);
+}
+
+function doneSplit(){
+  if(S.locked) return; const q=S.q;
+  const ok=q.sel.size===q.cuts.size&&[...q.sel].every(p=>q.cuts.has(p));
+  const given=q.letters.map((ch,i)=>ch+(q.sel.has(i)?" ":"")).join("");
+  document.getElementById("sp").innerHTML=splitHTML(q,true);
+  document.getElementById("dw").innerHTML="";
+  check(ok,given);
+}
+function check(ok,given){
+  S.locked=true;const q=S.q;
+  if(ok) S.score++;
+  const shown = q.type==="split"?q.sentence : q.type==="gap"?q.pre+q.ans+q.post : q.vert? `${q.vert[0]} ${q.vert[1]} = ${fmt(q.answer)}` : (q.type==="num"? stripTags(q.text).replace("?",fmt(q.answer)).replace("▢",fmt(q.answer)) : stripTags(q.text)+" → "+q.answer);
+  S.log.push({ok,shown,given});
+  if(q.type==="gap"||q.vert) document.getElementById("prompt").innerHTML=promptHTML(q,ok?"ok":"bad");
+  if(q.type==="choice"&&q.text.includes('class="gap"')) document.getElementById("prompt").innerHTML=`<div class="qtext">${q.text.replace('<span class="gap">&nbsp;</span>',`<span class="gap ${ok?"ok":"bad"} pop">${esc(q.answer)}</span>`)}</div>`;
+  const ans=document.getElementById("ans");
+  if(ans){ans.classList.add(ok?"ok":"bad"); if(!ok) ans.classList.add("shake")}
+  const fb=document.getElementById("fb");
+  const praise=pick(["Výborně! 🎉","Správně! 👏","Super! ⭐","Paráda! 💪","Přesně tak! ✅"]);
+  fb.className="feedback "+(ok?"ok":"bad");
+  fb.innerHTML= ok ? `${praise}${q.explain?`<small>${esc(q.explain)}</small>`:""}`
+    : `Správně je: <b>${esc(q.type==="num"?fmt(q.answer):q.answer)}</b>${q.explain?`<small>${esc(q.explain)}</small>`:""}`;
+  if(ok && !q.explain){ setTimeout(advance,900) }
+  else {
+    const c=document.getElementById("cont");
+    c.innerHTML=`<button class="btn" id="go">Pokračovat ›</button>`;
+    document.getElementById("go").onclick=advance;
+  }
+}
+function stripTags(s){return String(s).replace(/<[^>]+>/g,"").replace(/&nbsp;/g," ")}
+function advance(){
+  if(S.screen!=="quiz") return;
+  S.i++;
+  if(S.i>=QN){
+    const id=S.topic.id,b=kid().best; if((b[id]||0)<S.score){b[id]=S.score;save()}
+    S.screen="result";render();
+  } else nextQ();
+}
+
+function renderResult(){
+  const st=starsFor(S.score);
+  const msg=st===3?["🏆","Bez jediné chyby!"]:st===2?["🎉","Skvělá práce!"]:st===1?["👍","Dobrý začátek!"]:["💪","Zkus to ještě jednou!"];
+  const wrong=S.log.filter(l=>!l.ok);
+  app.innerHTML=`
+    <div class="top"><button class="back" id="bk">‹</button><h1>${S.topic.ico} ${S.topic.t}</h1></div>
+    <div class="qcard result">
+      <div class="big pop">${msg[0]}</div>
+      <h2>${msg[1]}</h2>
+      <p>Správně ${S.score} z ${QN}</p>
+      ${starsHTML(st)}
+      ${wrong.length?`<div class="mistakes"><div><b>Na tohle si dej pozor:</b></div>${wrong.map(l=>`<div>✏️ ${esc(l.shown)} <span style="color:var(--muted)">(odpověď: ${esc(l.given)})</span></div>`).join("")}</div>`:""}
+      <div class="btns">
+        <button class="btn" id="again">Znovu 🔄</button>
+        <button class="btn ghost" id="other">Jiné cvičení</button>
+      </div>
+    </div>`;
+  document.getElementById("bk").onclick=document.getElementById("other").onclick=()=>{S.screen="topics";render()};
+  document.getElementById("again").onclick=()=>startQuiz(S.topic.id);
+}
+
+/* fyzická klávesnice (iPad s klávesnicí) */
+document.addEventListener("keydown",e=>{
+  if(S.screen!=="quiz") return;
+  if(S.locked && e.key==="Enter"){const g=document.getElementById("go");if(g)g.click();return}
+  if(S.q.type==="split"&&e.key==="Enter"){doneSplit();return}
+  if(S.q.type==="num"){
+    if(/^[0-9]$/.test(e.key)) key(e.key);
+    else if(e.key==="Backspace") key("del");
+    else if(e.key==="Enter") key("ok");
+  }
+});
+
+render();
+if("serviceWorker" in navigator && location.protocol==="https:"){
+  navigator.serviceWorker.register("sw.js").catch(()=>{});
+}
+</script>
+</body>
+</html>
